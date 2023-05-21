@@ -11,6 +11,7 @@ Planned app features are aimed to include:
 - Project's can have cost limits that will cause alerts if the project invoicing is nearing that limit.
   - These limits can also be set on workload in which case the time is measured.
 - Customer's or projects can be modified or removed by managers at which point the done work will be assigned to a customer/project that can't otherwise be selected when inputting work time.
+  - Alternatively, they'll be set invisible and won't appear when viewing statistics.
 - A task consists of 
   - amount of the work in hours and minutes
   - date, when the work was done
