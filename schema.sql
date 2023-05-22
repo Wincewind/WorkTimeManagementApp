@@ -44,5 +44,6 @@ CREATE TABLE tasks (
     invoiceable BOOLEAN,
     note TEXT
 );
-INSERT INTO roles (name, permission_level) VALUES ('manager',1);
-INSERT INTO roles (name, permission_level) VALUES ('developer',2);
+INSERT INTO roles (name, permission_level) 
+VALUES  ('manager',1),
+        ('developer',2);
