@@ -1,0 +1,15 @@
+<form action="/signup" method="POST">
+    Username: <input type="text" name="username" minlength={min_un_len} maxlength="20">
+    <br></br>
+    Password: <input type="password" name="password" minlength={min_pw_len} maxlength="30">
+    <br></br>
+    <label for="roles">Choose a user role:</label>
+  <select name="roles" id="role">
+    {% for role in roles %}
+    <option value={{ role.id }}>{{ role.name }}</option>
+    {% endfor %}
+  </select>
+  <br></br>
+    <input type="submit" value="Create new credentials">
+    {% include 'flash.html' %}
+</form>
