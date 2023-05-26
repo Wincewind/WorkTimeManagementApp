@@ -10,7 +10,10 @@ class TaskService:
         self._roles = None
 
     def get_weeks_tasks(self,user_id: int):
-        week_num = date(datetime.now()).isocalendar()[1]
+        week_num = datetime.now().isocalendar()[1]
         return self.repository.get_weeks_tasks(user_id,week_num)
+
+    def get_customers_and_projects(self):
+        return self.repository.get_customers_and_projects()
 
 task_service = TaskService()

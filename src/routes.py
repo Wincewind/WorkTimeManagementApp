@@ -9,8 +9,17 @@ def index():
     if 'user_id' not in session or not session['user_id']:
         return redirect("/login")
     if request.method == "GET":
+        customers_and_projects = []
+        #user_service.check_user_role_level(2)
+        customers_and_projects = task_service.get_customers_and_projects()
+        customers = {(cap.customer_id,cap.customer_name) for cap in customers_and_projects}
+        projects = [{'project_id':cap.project_id,
+                     'customer_id':cap.customer_id,
+                     'project_name':cap.project_name} for cap in customers_and_projects]
         tasks = task_service.get_weeks_tasks(session['user_id'])
-        return render_template("index.html", tasks=tasks)
+        return render_template("index.html", tasks=tasks,
+                               projects=projects,
+                               customers=customers)
 
 @app.route("/login",methods=["GET","POST"])
 def login():

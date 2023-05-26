@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from repositories.user_repository import user_repository
 from secrets import token_hex
@@ -33,4 +33,7 @@ class UserService:
             self._roles = self._get_user_roles()
         return self._roles
 
+    def check_user_role_level(self, level):
+        if level < session.get("user_level", float('inf')):
+            abort(403)
 user_service = UserService()
