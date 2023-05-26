@@ -1,1 +1,75 @@
-Hello world
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Home Page</title>
+    <style>
+    html {
+      font-family: sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      border: 2px solid rgb(200,200,200);
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+    }
+
+    td, th {
+      border: 1px solid rgb(190,190,190);
+      padding: 10px 20px;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    caption {
+      padding: 10px;
+    }
+    table {
+	display: table;
+}
+    table tr {
+        display: table-cell;
+    }
+    table tr td {
+        display: block;
+    }
+    </style>
+  </head>
+<h1>Home Page</h1>
+<h2 id="week_num"></h2>
+
+<table>
+        <tr>Mon</tr>
+        <td>
+            ABC Oy Kiinteistö Huolto 12h
+        </td>
+        <th>Tues</th>
+        <th>Wed</th>
+        <th>Thurs</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+    <tr>
+    </tr>
+        {% for task in tasks %}
+        <option value={{ task.id }}>{{ task.customer }}</option>
+        {% endfor %}
+        <td>
+
+        </td>
+    </tr>
+</table>
+
+<script>
+    function getCurrentWeek() {
+        currentDate = new Date();
+        startDate = new Date(currentDate.getFullYear(), 0, 1);
+        var days = Math.floor((currentDate - startDate) /
+            (24 * 60 * 60 * 1000));
+        return Math.ceil(days / 7);
+    }
+    let weekNum = getCurrentWeek();
+    document.getElementById("week_num").innerHTML = "Week " + weekNum;
+</script>

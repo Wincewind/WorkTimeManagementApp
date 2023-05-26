@@ -2,12 +2,15 @@ from flask import redirect, render_template, request, session, flash
 from sqlalchemy import text
 from app import app
 from services.user_service import user_service
+from services.task_service import task_service
 
-@app.route("/")
+@app.route("/",methods=["GET","POST"])
 def index():
     if 'user_id' not in session or not session['user_id']:
         return redirect("/login")
-    return render_template("index.html")
+    if request.method == "GET":
+        tasks = task_service.get_weeks_tasks(session['user_id'])
+        return render_template("index.html", tasks=tasks)
 
 @app.route("/login",methods=["GET","POST"])
 def login():

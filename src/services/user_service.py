@@ -1,6 +1,7 @@
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 from repositories.user_repository import user_repository
+from secrets import token_hex
 
 class UserService:
     def __init__(self) -> None:
@@ -16,6 +17,7 @@ class UserService:
         session['user_level'] = user_repository.get_permission_level(user.role_id)
         session['user_id'] = user.id
         session['username'] = user.username
+        session["csrf_token"] = token_hex(16)
 
         return True
     

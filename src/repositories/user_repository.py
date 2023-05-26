@@ -18,10 +18,10 @@ class UserRepository:
 
     def get_permission_level(self, role_id):
         sql = text('SELECT permission_level FROM roles WHERE id=:role_id')
-        return db.session.execute(sql, {"role_id":role_id}).fetchone()[0]
+        return self._db.session.execute(sql, {"role_id":role_id}).fetchone()[0]
 
     def get_user_roles(self):
-        return self._db.session.execute(text('SELECT * FROM roles')).fetchall()
+        return self._db.session.execute(text('SELECT * FROM roles;')).fetchall()
     
     def create_credentials(self,username,password,role_id):
         if self.find_user(username) is not None:
@@ -32,7 +32,7 @@ class UserRepository:
         self._db.session.execute(sql, {"username":username,
                                        "password":pw_hash,
                                        "role_id":role_id})
-        db.session.commit()
+        self._db.session.commit()
         return True
 
     # session['user_id'] = result.id
