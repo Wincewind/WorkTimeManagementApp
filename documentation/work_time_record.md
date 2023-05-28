@@ -5,5 +5,6 @@
 | 19.5. | 2   | Started creating basic login functions and defining db tables |
 | 20.5. | 3   | Continued working on login and signup functionality |
 | 26.5. | 6   | Developed task creation functionality |
-| dd.M. | 0   | Lorem ipsum |
-| total | 11   | |
+| 27.5. | 2   | " |
+| 28.5. | 2   | Finished first version of task creation func |
+| total | 15   | |
