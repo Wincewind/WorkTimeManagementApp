@@ -16,10 +16,12 @@ def index():
         projects = [{'project_id':cap.project_id,
                      'customer_id':cap.customer_id,
                      'project_name':cap.project_name} for cap in customers_and_projects]
+        task_types = task_service.get_all_task_types()
         tasks = task_service.get_weeks_tasks(session['user_id'])
         return render_template("index.html", tasks=tasks,
                                projects=projects,
-                               customers=customers)
+                               customers=customers,
+                               task_types=task_types)
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -55,3 +57,15 @@ def signup():
         return render_template("signup.html", roles=user_service.roles,
                                min_un_len=min_un_len, min_pw_len=min_pw_len)
     
+@app.route("/create-task",methods=["POST"])
+def create_task():
+    user_service.check_csrf(request.form["csrf_token"])
+    task = {'user_id':session["user_id"],'invoiceable':False}
+    for val in request.form:
+        if val != 'csrf_token':
+            if val == 'duration':
+                task['duration_hours'], task['duration_minutes'] = request.form[val].split(':')
+            else:
+                task[val] = request.form[val]
+    task_service.create_task(task)
+    return redirect('/')

@@ -23,5 +23,16 @@ class TaskRepository:
                    "WHERE customers.visible = TRUE AND projects.visible = TRUE " \
                     "GROUP BY customers.id, projects.id;")
         return self._db.session.execute(sql).fetchall()
+    
+    def get_types(self):
+        return self._db.session.execute(text("SELECT * FROM task_types;"))
+    
+    def create(self, task_values: dict):
+        sql = text("INSERT INTO tasks (user_id, duration_hours, duration_minutes, " \
+                   "task_date, customer_id, project_id, task_type_id, invoiceable, note) " \
+                    "VALUES (:user_id, :duration_hours, :duration_minutes, " \
+                    ":task_date, :customer_id, :project_id, :task_type_id, :invoiceable, :note)")
+        self._db.session.execute(sql, task_values)
+        self._db.session.commit()
 
 task_repository = TaskRepository(db)

@@ -1,5 +1,5 @@
 from flask import session, abort
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 from repositories.user_repository import user_repository
 from secrets import token_hex
 
@@ -35,5 +35,9 @@ class UserService:
 
     def check_user_role_level(self, level):
         if level < session.get("user_level", float('inf')):
+            abort(403)
+
+    def check_csrf(self, token):
+        if session["csrf_token"] != token:
             abort(403)
 user_service = UserService()

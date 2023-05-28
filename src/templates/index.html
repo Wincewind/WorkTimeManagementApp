@@ -49,16 +49,21 @@
   bottom: 23px;
   right: 28px;
   width: 280px;
+  display: block;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
+  text-align: center;
   display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
+  /* position: fixed; */
+  /* bottom: 0;
+  right: 15px; */
   z-index: 9;
+  margin: auto;
+  width: 40%;
+  border: 3px solid #f1f1f1;
+  /* padding: 10px; */
 }
 
 /* Add styles to the form container */
@@ -69,16 +74,24 @@
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+/* .form-container input[type=text], .form-container input[type=password] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
+} */
+.form-container input {
+  text-align: left;
+  /* width: 100%; */
+  /* padding: 15px; */
+  /* margin: 5px 0 22px 0; */
+  /* border: none; */
+  background: #f1f1f1;
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input:focus, .form-container input:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -93,6 +106,7 @@
   width: 100%;
   margin-bottom:10px;
   opacity: 0.8;
+  display: block;
 }
 
 /* Add a red background color to the cancel button */
@@ -103,6 +117,7 @@
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
+  display: block;
 }
 
     </style>
@@ -132,36 +147,53 @@
     </tr>
 </table>
 
-<button class="open-button" onclick="openForm()">Create a task</button>
+<button class="open-button" id="open-button" onclick="openForm()">Create a task</button>
 
 <!-- The form -->
-<div class="form-popup" id="myForm">
+<div class="form-popup" id="taskForm">
   <form action="/create-task" class="form-container" method="POST">
     <h1>Create a task</h1>
+    <fieldset>
+      <label for="task_date"><b>Date of task:</b></label>
+      <input type="date" name="task_date" id='task_date' required>
+      <label for="invoiceable"><b>Invoiceable work:</b></label>
+      <input type="checkbox" name="invoiceable" id='invoiceable'><br><br>
 
-    <label for="customers"><b>Choose a customer</b></label>
-    <select name="customers" id="customer" onchange="updateProjectsList()">
-    {% for customer in customers %}
-      <option value={{ customer[0] }}>{{ customer[1] }}</option>
-    {% endfor %}
-    </select>
-    <br></br>
+      <label for="customer_id"><b>Choose a customer:</b></label>
+      <select name="customer_id" id="customer_id" onchange="updateProjectsList()">
+      {% for customer in customers %}
+        <option value={{ customer[0] }}>{{ customer[1] }}</option>
+      {% endfor %}
+      </select><br><br>
 
-    <label for="projects"><b>Choose a project</b></label>
-    <select name="projects" id="project">
-    </select>
+      <label for="project_id"><b>Choose a project:</b></label>
+      <select name="project_id" id="project_id">
+      </select><br><br>
 
-    <!-- <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required> -->
+      <label for="duration"><b>Task duration (hours:minutes):</b></label>
+      <input type="time" name="duration" id='duration' required><br><br>
 
-    <button type="submit" class="btn">Save task</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+      <label for="task_type_id"><b>Type of task:</b></label>
+      <select name="task_type_id" id="task_type_id">
+      {% for task_type in task_types %}
+        <option value={{ task_type.id }}>{{ task_type.description }}</option>
+      {% endfor %}
+      </select><br><br>
+
+      <label for="note"><b>Task description:</b></label>
+      <textarea id="note" name="note" rows="4" cols="50" required></textarea><br><br>
+
+      
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <button type="submit" class="btn">Save task</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+    </fieldset>
   </form>
 </div>
 
 <script>
     function getSelectedCustomerName() {
-    var el = document.getElementById('customer');
+    var el = document.getElementById('customer_id');
     return el.value;
     }
 
@@ -176,17 +208,19 @@
     document.getElementById("week_num").innerHTML = "Week " + weekNum;
     
     function openForm() {
-      document.getElementById("myForm").style.display = "block";
+      document.getElementById("taskForm").style.display = "block";
+      document.getElementById("open-button").style.display = "none";
     }
 
     function closeForm() {
-      document.getElementById("myForm").style.display = "none";
+      document.getElementById("taskForm").style.display = "none";
+      document.getElementById("open-button").style.display = "block";
     }
     
     var projects = JSON.parse('{{ projects | tojson }}');
     console.log(projects);
     function updateProjectsList() {
-      projectEl = document.getElementById("project");
+      projectEl = document.getElementById("project_id");
       projectEl.innerHTML = '';
       for (let i = 0; i < projects.length; i++) {
         if (projects[i].customer_id == getSelectedCustomerName()){

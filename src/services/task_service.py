@@ -15,5 +15,11 @@ class TaskService:
 
     def get_customers_and_projects(self):
         return self.repository.get_customers_and_projects()
+    
+    def get_all_task_types(self):
+        return self.repository.get_types()
+    
+    def create_task(self,task):
+        self.repository.create(task)
 
 task_service = TaskService()
