@@ -7,7 +7,7 @@ class TaskRepository:
         self._db = db
 
     def get_weeks_tasks(self, user_id: int, week_num: int):
-        sql = text("SELECT * FROM tasks " \
+        sql = text("SELECT task_date, customers.name as customer_name FROM tasks " \
                    "LEFT JOIN customers ON customer_id=customers.id " \
                    "LEFT JOIN projects ON project_id=projects.id " \
                    "LEFT JOIN task_types ON task_type_id=task_types.id " \

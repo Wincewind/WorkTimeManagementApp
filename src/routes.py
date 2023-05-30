@@ -48,7 +48,7 @@ def signup():
         role_id = request.form["roles"]
         if len(username) < min_un_len or len(password) < min_pw_len:
             flash(f'Username needs to be atleast {min_un_len} characters long' \
-                  'and password {min_pw_len} characters.')
+                  f'and password {min_pw_len} characters.')
         elif user_service.create_credentials(username,password,role_id):
             flash('New credentials created.')
             return redirect("/login")

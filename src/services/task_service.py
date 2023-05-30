@@ -20,6 +20,6 @@ class TaskService:
         return self.repository.get_types()
     
     def create_task(self,task):
-        self.repository.create(task)
+        self.repository.create(task)     
 
 task_service = TaskService()
