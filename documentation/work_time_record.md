@@ -7,4 +7,5 @@
 | 26.5. | 6   | Developed task creation functionality |
 | 27.5. | 2   | " |
 | 28.5. | 2   | Finished first version of task creation func |
-| total | 15   | |
+| 29.5. | 3   | Started developing app visuals with bootstrap |
+| total | 18   | |
