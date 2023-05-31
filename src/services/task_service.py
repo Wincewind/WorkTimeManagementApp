@@ -9,8 +9,8 @@ class TaskService:
         self.repository = task_repository
         self._roles = None
 
-    def get_weeks_tasks(self,user_id: int):
-        week_num = datetime.now().isocalendar()[1]
+    def get_weeks_tasks(self,user_id: int, chosen_date=datetime.now()):
+        week_num = chosen_date.isocalendar()[1]
         return self.repository.get_weeks_tasks(user_id,week_num)
 
     def get_customers_and_projects(self):
@@ -20,6 +20,6 @@ class TaskService:
         return self.repository.get_types()
     
     def create_task(self,task):
-        self.repository.create(task)     
+        self.repository.create(task)
 
 task_service = TaskService()

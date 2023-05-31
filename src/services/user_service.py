@@ -18,8 +18,12 @@ class UserService:
         session['user_id'] = user.id
         session['username'] = user.username
         session["csrf_token"] = token_hex(16)
-
         return True
+    
+    def logout(self):
+        del session["user_id"]
+        del session["username"]
+        del session["user_level"]
     
     def _get_user_roles(self):
         return self.repository.get_user_roles()
@@ -40,4 +44,5 @@ class UserService:
     def check_csrf(self, token):
         if session["csrf_token"] != token:
             abort(403)
+            
 user_service = UserService()

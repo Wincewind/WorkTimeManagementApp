@@ -3,6 +3,10 @@ body {
     color: white;
 }
 
-h1, h2 {
+h1, h2, .navbar a, .navbar .sr-only{
     color: rgb(255, 105, 5);
+}
+
+.row .card{
+    background-color: rgb(255, 105, 5);
 }

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/main.css">
     <style>
       /* Button used to open the contact form - fixed at the bottom of the page */
-      .open-button {
+      /* .open-button {
         background-color: rgb(255, 105, 5);
         color: white;
         padding: 16px 20px;
@@ -17,292 +17,249 @@
         right: 28px;
         width: 280px;
         display: block;
-      }
+      } */
 
-      /* The popup form - hidden by default */
-      .form-popup {
-        text-align: center;
+      #taskForm {
         display: none;
-        position: fixed;
-        bottom: 0;
-        right: 15px;
-        z-index: 9;
-        margin: auto;
-        width: 40%;
-        border: 3px solid #f1f1f1;
-        padding: 10px;
-      }
-
-      /* Add styles to the form container */
-      .form-container {
-        max-width: 300px;
-        padding: 10px;
-        background-color: white;
-      }
-
-      /* Full-width input fields */
-      .form-container input[type=text], .form-container input[type=password] {
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0 22px 0;
-        border: none;
-        background: #f1f1f1;
-      }
-      .form-container input {
-        text-align: left;
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0 22px 0;
-        border: none;
-        background: #f1f1f1;
-      }
-
-      /* When the inputs get focus, do something */
-      .form-container input:focus, .form-container input:focus {
-        background-color: #ddd;
-        outline: none;
-      }
-
-      /* Set a style for the submit/login button */
-      .form-container .btn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 16px 20px;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        margin-bottom:10px;
-        opacity: 0.8;
-        display: block;
-      }
-
-      /* Add a red background color to the cancel button */
-      .form-container .cancel {
-        background-color: red;
-      }
-
-      /* Add some hover effects to buttons */
-      .form-container .btn:hover, .open-button:hover {
-        opacity: 1;
-        display: block;
-      }
-
-      .user-task {
-        background-color: rgb(137, 128, 128);
-        padding: 5px 5px;
-        width: 280px;
       }
     </style>
 </head>
-<!-- <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Home Page</title> -->
-    <!-- <style>
-    html {
-      font-family: sans-serif;
-    }
+<form action="/change-week" class="form-inline" method="GET">
+  <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
+  <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ chosen_date }}">
+</form>
 
-    table {
-      border-collapse: collapse;
-      border: 2px solid rgb(200,200,200);
-      letter-spacing: 1px;
-      font-size: 0.8rem;
-    }
-
-    td, th {
-      border: 1px solid rgb(190,190,190);
-      padding: 10px 20px;
-    }
-
-    td {
-      text-align: center;
-    }
-
-    caption {
-      padding: 10px;
-    }
-    table {
-	display: table;
-}
-    table tr {
-        display: table-cell;
-    }
-    table tr td {
-        display: block;
-    }
-    {box-sizing: border-box;}
-
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-  display: block;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  text-align: center;
-  display: none;
-  /* position: fixed; */
-  /* bottom: 0;
-  right: 15px; */
-  z-index: 9;
-  margin: auto;
-  width: 40%;
-  border: 3px solid #f1f1f1;
-  /* padding: 10px; */
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-/* .form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-} */
-.form-container input {
-  text-align: left;
-  /* width: 100%; */
-  /* padding: 15px; */
-  /* margin: 5px 0 22px 0; */
-  /* border: none; */
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input:focus, .form-container input:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-  display: block;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-  display: block;
-}
-
-.user-task {
-  background-color: rgb(137, 128, 128);
-  padding: 5px 5px;
-  width: 280px;
-}
-
-    </style> -->
-  <!-- </head> -->
+<div class="text-center">
 <h1>Home Page</h1>
 <h2 id="week_num"></h2>
+</div>
 
-<table>
-        <tr>Mon</tr>
-        <td>
-            ABC Oy Kiinteistö Huolto 12h
-        </td>
-        <th>Tues</th>
-        <th>Wed</th>
-        <th>Thurs</th>
-        <th>Fri</th>
-        <th>Sat</th>
-        <th>Sun</th>
-    <tr>
-    </tr>
-        {% for task in tasks %}
-        <div class="user-task" id="user-task">
-        <a href="/asd">{{ task.task_date }} {{ task.customer_name }}</a>
-        {% endfor %}
-        </div>
-        <td>
-
-        </td>
-    </tr>
-</table>
-
-<button class="open-button" id="open-button" onclick="openForm()">Create a task</button>
-
-<!-- The form -->
-<div class="form-popup" id="taskForm">
-  <form action="/create-task" class="form-container" method="POST">
-    <h1>Create a task</h1>
-    <fieldset>
-      <label for="task_date"><b>Date of task:</b></label>
-      <input type="date" name="task_date" id='task_date' required>
-      <label for="invoiceable"><b>Invoiceable work:</b></label>
-      <input type="checkbox" name="invoiceable" id='invoiceable'><br><br>
-
-      <label for="customer_id"><b>Choose a customer:</b></label>
-      <select name="customer_id" id="customer_id" onchange="updateProjectsList()">
-      {% for customer in customers %}
-        <option value={{ customer[0] }}>{{ customer[1] }}</option>
-      {% endfor %}
-      </select><br><br>
-
-      <label for="project_id"><b>Choose a project:</b></label>
-      <select name="project_id" id="project_id">
-      </select><br><br>
-
-      <label for="duration"><b>Task duration (hours:minutes):</b></label>
-      <input type="time" name="duration" id='duration' required><br><br>
-
-      <label for="task_type_id"><b>Type of task:</b></label>
-      <select name="task_type_id" id="task_type_id">
-      {% for task_type in task_types %}
-        <option value={{ task_type.id }}>{{ task_type.description }}</option>
-      {% endfor %}
-      </select><br><br>
-
-      <label for="note"><b>Task description:</b></label>
-      <textarea id="note" name="note" rows="4" cols="50" required></textarea><br><br>
-
-      
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-      <button type="submit" class="btn">Save task</button>
-      <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
-    </fieldset>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navigation</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Home
+          </a>
+          <ul class="dropdown-menu bg-dark">
+            <li><a class="dropdown-item" onclick="openForm()" href="#">Create a task</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item active">
+          <a class="nav-item nav-link active" href="#"><span class="sr-only">Home</span></a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="#">Customer management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="#">Project management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="#">Query and export invoicing</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form action="/logout" class="form-inline">
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Sign Out</button>
   </form>
+</nav>
+
+<div class="row">
+
+<div class="col">
+  <h1>Mon</h1>
+  {% for task in tasks %}
+    {% if task.task_date.weekday() == 0 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+  <div class="col">
+    <h1>Tue</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 1 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+  <div class="col">
+    <h1>Wed</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 2 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+  <div class="col">
+    <h1>Thu</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 3 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+  <div class="col">
+    <h1>Fri</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 4 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+  <div class="col">
+    <h1>Sat</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 5 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+  <div class="col">
+    <h1>Sun</h1>
+    {% for task in tasks %}
+    {% if task.task_date.weekday() == 6 %}
+      <div class="row">
+        <div class="card text-white mb-3" style="max-width: 18rem;">
+          <div class="card-header">{{ task.customer_name }}</div>
+          <div class="card-body">
+            <h5 class="card-title">{{ task.project_name }}</h5>
+            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+          </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+</div>
+
+
+<div class="position-relative">
+  <div class="position-fixed top-50 start-50 translate-middle" id="taskForm">
+    <div class="card bg-white text-dark" style="border-radius: 1rem;">
+    <div class="card-body p-5">
+      <div class="text-center">
+        <h1>Create a task</h1>
+        <!-- <h2>Sign In</h2> -->
+      </div>
+      <form action="/create-task" class="form-container" method="POST">
+        <fieldset>
+          <div class="input-group-text">
+            <div class="row">
+              <div class="col">
+                <label for="task_date" class="form-label"><b>Date of task:</b></label>
+                <input type="date" name="task_date" id='task_date' required>
+              </div>
+              <div class="col">
+                <label for="invoiceable" class="form-label"><b>Invoiceable work:</b></label>
+                <input type="checkbox" name="invoiceable" id='invoiceable'>
+              </div>
+            </div>
+          </div>
+          
+          <label for="customer_id" class="form-label"><b>Choose a customer:</b></label>
+          <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()">
+          {% for customer in customers %}
+            <option value={{ customer[0] }}>{{ customer[1] }}</option>
+          {% endfor %}
+          </select>
+          <label class="form-label" for="project_id"><b>Choose a project:</b></label>
+          <select class="form-select" name="project_id" id="project_id"></select>
+    
+          <div class="row">
+            <div class="col">
+              <label class="form-label" for="duration"><b>Task duration (hours:minutes):</b></label>
+              <input type="time" name="duration" id='duration' required>
+            </div>
+          </div>
+    
+          <label class="form-label" for="task_type_id"><b>Type of task:</b></label>
+          <select class="form-select" name="task_type_id" id="task_type_id">
+          {% for task_type in task_types %}
+            <option value={{ task_type.id }}>{{ task_type.description }}</option>
+          {% endfor %}
+          </select>
+          
+          <div class="input-group-text m-3">
+          <label class="form-label" for="note"><b>Task description:</b></label>
+          <textarea id="note" name="note" rows="4" cols="50" required></textarea>
+        </div>
+          
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <div class="position-relative">
+            <button class="btn btn-primary btn-lg mb-3" type="submit" class="btn">Save task</button>
+            <button class="btn btn-secondary btn-lg mb-3" type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    </div>
+  </div>
 </div>
 
 <script>
+
     function getSelectedCustomerName() {
     var el = document.getElementById('customer_id');
     return el.value;
     }
 
     function getCurrentWeek() {
-        currentDate = new Date();
+        currentDate = new Date(document.getElementById("chosen_date").value);
         startDate = new Date(currentDate.getFullYear(), 0, 1);
         var days = Math.floor((currentDate - startDate) /
             (24 * 60 * 60 * 1000));
@@ -313,12 +270,12 @@
     
     function openForm() {
       document.getElementById("taskForm").style.display = "block";
-      document.getElementById("open-button").style.display = "none";
+      // document.getElementById("open-button").style.display = "none";
     }
 
     function closeForm() {
       document.getElementById("taskForm").style.display = "none";
-      document.getElementById("open-button").style.display = "block";
+      // document.getElementById("open-button").style.display = "block";
     }
     
     var projects = JSON.parse('{{ projects | tojson }}');
