@@ -8,4 +8,6 @@
 | 27.5. | 2   | " |
 | 28.5. | 2   | Finished first version of task creation func |
 | 29.5. | 3   | Started developing app visuals with bootstrap |
-| total | 18   | |
+| 30.5. | 3   | Updating the visuals of home page |
+| 31.5. | 4   | Continued updating the home page visuals and added some functionality to it |
+| total | 25   | |
