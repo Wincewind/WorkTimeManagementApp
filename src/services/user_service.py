@@ -2,6 +2,7 @@ from flask import session, abort
 from werkzeug.security import check_password_hash
 from repositories.user_repository import user_repository
 from secrets import token_hex
+from datetime import datetime
 
 class UserService:
     def __init__(self) -> None:
@@ -18,12 +19,14 @@ class UserService:
         session['user_id'] = user.id
         session['username'] = user.username
         session["csrf_token"] = token_hex(16)
+        session["chosen_date"] = datetime.now()
         return True
     
     def logout(self):
         del session["user_id"]
         del session["username"]
         del session["user_level"]
+        del session["chosen_date"]
     
     def _get_user_roles(self):
         return self.repository.get_user_roles()

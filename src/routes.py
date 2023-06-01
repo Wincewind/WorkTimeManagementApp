@@ -1,15 +1,12 @@
 from flask import redirect, render_template, request, session, flash
-from datetime import date, datetime
+from datetime import datetime
 from sqlalchemy import text
 from app import app
 from services.user_service import user_service
 from services.task_service import task_service
 
-CHOSEN_DATE = datetime.now()
-
 @app.route("/",methods=["GET","POST"])
 def index():
-    global CHOSEN_DATE
     if 'user_id' not in session or not session['user_id']:
         return redirect("/login")
     if request.method == "GET":
@@ -21,8 +18,8 @@ def index():
                      'customer_id':cap.customer_id,
                      'project_name':cap.project_name} for cap in customers_and_projects]
         task_types = task_service.get_all_task_types()
-        tasks = task_service.get_weeks_tasks(session['user_id'],CHOSEN_DATE)
-        return render_template("index.html", chosen_date=CHOSEN_DATE.strftime('%Y-%m-%d'),
+        tasks = task_service.get_weeks_tasks(session['user_id'],session["chosen_date"])
+        return render_template("index.html", chosen_date=session["chosen_date"].strftime('%Y-%m-%d'),
                                tasks=tasks,
                                projects=projects,
                                customers=customers,
@@ -42,9 +39,7 @@ def login():
     
 @app.route("/logout") 
 def logout():
-    global CHOSEN_DATE
     user_service.logout()
-    CHOSEN_DATE = datetime.now()
     return redirect('/')
 
 @app.route("/signup",methods=["GET","POST"])
@@ -85,6 +80,5 @@ def create_task():
 
 @app.route("/change-week",methods=["GET"])
 def change_week():
-    global CHOSEN_DATE
-    CHOSEN_DATE = datetime.fromisoformat(request.args['chosen_date'])
+    session["chosen_date"] = datetime.fromisoformat(request.args['chosen_date'])
     return redirect('/')
