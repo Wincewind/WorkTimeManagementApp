@@ -10,6 +10,11 @@ Current progress can be viewed online at http://tsoha-worktime-manager.fly.dev/
   - [x] With insufficient user role level, users can't access some pages (e.g. developer shouldn't access customer or project management)  and these navbar selections are also disabled.
   - [ ] Add navbar to the layout.html.
   - [ ] Make all the different page dropdowns avaialble from any page.
+- [x] Home Page view where 
+  - [x] tasks can be created
+  - [x] a weekday table, that shows user's recorded tasks for that day.
+  - [x] date selection that can be used to change the week to display.
+  - [ ] task cards can be clicked to open a menu to edit the task.
 - [x] Users can login to the app and create new developer and manager level credentials.
   - [ ] customer role.
 - Developers and managers can
