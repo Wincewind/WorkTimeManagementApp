@@ -2,6 +2,12 @@
 A web app to record work time for projects and keep track of customer invoicing and elapsed workload. Developers record work time done for customer projects which are managed by managers. Projects can have workload or cost limits which cause alerts based on the accumulated invoicing.
 
 ## App features currently implemented are marked with a ✔:
+
+- [x] Simple visuals created using Bootstrap ver 5.2.
+- [x] Navigation bar where different pages and their functions can be selected.
+  - [x] With insufficient user role level, users can't access some pages (e.g. developer shouldn't access customer or project management)  and these navbar selections are also disabled.
+  - [ ] Add navbar to the layout.html.
+  - [ ] Make all the different page dropdowns avaialble from any page.
 - [x] Users can login to the app and create new developer and manager level credentials.
   - [ ] customer role.
 - Developers and managers can
