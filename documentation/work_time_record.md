@@ -10,5 +10,5 @@
 | 29.5. | 3   | Started developing app visuals with bootstrap |
 | 30.5. | 3   | Updating the visuals of home page |
 | 31.5. | 4   | Continued updating the home page visuals and added some functionality to it |
-| 31.5. | 3   | Started working on the customer services and management page |
+| 2.6. | 3   | Started working on the customer services and management page |
 | total | 28   | |
