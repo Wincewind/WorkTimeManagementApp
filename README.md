@@ -5,7 +5,7 @@ Current progress can be viewed online at http://tsoha-worktime-manager.fly.dev/
 
 ## App features currently implemented are marked with a ✔:
 
-- [x] Simple visuals created using Bootstrap ver 5.2.
+- [x] Simple visuals created using Bootstrap ver 5.2 and customized when needed to create a more personalized look.
 - [x] Navigation bar where different pages and their functions can be selected.
   - [x] With insufficient user role level, users can't access some pages (e.g. developer shouldn't access customer or project management)  and these navbar selections are also disabled.
   - [ ] Add navbar to the layout.html.
