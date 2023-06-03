@@ -1,9 +1,9 @@
 from flask import redirect, render_template, request, session, flash
 from datetime import datetime
-from sqlalchemy import text
 from app import app
 from services.user_service import user_service
 from services.task_service import task_service
+from services.customer_service import customer_service
 
 @app.route("/",methods=["GET","POST"])
 def index():
@@ -37,7 +37,7 @@ def login():
         flash('Incorrect username or password.')
         return render_template("login.html")
     
-@app.route("/logout") 
+@app.route("/logout")
 def logout():
     user_service.logout()
     return redirect('/')
@@ -82,3 +82,45 @@ def create_task():
 def change_week():
     session["chosen_date"] = datetime.fromisoformat(request.args['chosen_date'])
     return redirect('/')
+
+@app.route("/customers",methods=["GET","POST"])
+def customers():
+    user_service.check_user_role_level(1)
+    managers = user_service.get_users(1)
+    customers_and_projects = customer_service.get_customers_and_projects()
+    customers = {(cap.customer_id,cap.customer_name) for cap in customers_and_projects}
+
+    if request.method == "POST":
+        if 'delete_button' in request.form and session.get("chosen_customer", None) is not None:
+            customer_service.delete_customer(request.form["customer_id"])
+            return redirect("/deselect-customer")
+
+        elif 'save_button' in request.form:
+            customer = {}
+            for val in request.form:
+                if val in ['customer_name','manager_id']:
+                    customer[val] = request.form[val]
+            if session.get("chosen_customer", None) is not None:
+                customer['customer_id'] = request.form['customer_id']
+                customer_service.edit_customer(customer)
+            else:
+                customer_service.create_customer(customer)
+            return redirect("/deselect-customer")
+        else:
+            return redirect('/deselect-customer')
+        
+    return render_template('customers.html', managers=managers,
+                           customers=customers,
+                           chosen_customer=session.get("chosen_customer", None))
+
+@app.route("/select-customer",methods=["POST"])
+def select_customer():
+    user_service.check_user_role_level(1)
+    session["chosen_customer"] = customer_service.get_customer_details(request.form["customer_id"])._asdict()
+    return redirect("/customers")
+
+@app.route("/deselect-customer")
+def deselect_customer():
+    if session.get("chosen_customer", None) is not None:
+        del session["chosen_customer"]
+    return redirect('/customers')

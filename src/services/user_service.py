@@ -47,5 +47,8 @@ class UserService:
     def check_csrf(self, token):
         if session["csrf_token"] != token:
             abort(403)
-            
+
+    def get_users(self, level=float('inf')):
+        return self.repository.get_users(level)
+
 user_service = UserService()

@@ -27,13 +27,19 @@ class UserRepository:
         if self.find_user(username) is not None:
             return False
         pw_hash = generate_password_hash(password)
-        sql = text("INSERT INTO users (username,password,role_id)" \
+        sql = text("INSERT INTO users (username,password,role_id) " \
                    "VALUES (:username, :password, :role_id)")
         self._db.session.execute(sql, {"username":username,
                                        "password":pw_hash,
                                        "role_id":role_id})
         self._db.session.commit()
         return True
+    
+    def get_users(self, user_role_level):
+        sql = text("SELECT users.id as user_id, username " \
+                   "FROM users LEFT JOIN roles ON users.role_id = roles.id " \
+                    "WHERE permission_level <= :user_level GROUP BY users.id, roles.id;")
+        return  self._db.session.execute(sql,{"user_level":user_role_level}).fetchall()
 
     # session['user_id'] = result.id
     # session['permission_level'] =_get_permission_level(result.role_id)

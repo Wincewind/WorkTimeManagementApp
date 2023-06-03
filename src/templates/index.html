@@ -4,21 +4,6 @@
 <head>
     <link rel="stylesheet" href="/static/main.css">
     <style>
-      /* Button used to open the contact form - fixed at the bottom of the page */
-      /* .open-button {
-        background-color: rgb(255, 105, 5);
-        color: white;
-        padding: 16px 20px;
-        border: none;
-        cursor: pointer;
-        opacity: 0.8;
-        position: fixed;
-        bottom: 23px;
-        right: 28px;
-        width: 280px;
-        display: block;
-      } */
-
       #taskForm {
         display: none;
       }
@@ -53,11 +38,12 @@
         <!-- <li class="nav-item active">
           <a class="nav-item nav-link active" href="#"><span class="sr-only">Home</span></a>
         </li> -->
+        
         <li class="nav-item">
-          <a class="nav-item nav-link" href="#">Customer management</a>
+          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="/customers">Customer management</a>
         </li>
         <li class="nav-item">
-          <a class="nav-item nav-link" href="#">Project management</a>
+          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="#">Project management</a>
         </li>
         <li class="nav-item">
           <a class="nav-item nav-link" href="#">Query and export invoicing</a>
@@ -212,13 +198,13 @@
           </div>
           
           <label for="customer_id" class="form-label"><b>Choose a customer:</b></label>
-          <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()">
+          <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()" required>
           {% for customer in customers %}
             <option value={{ customer[0] }}>{{ customer[1] }}</option>
           {% endfor %}
           </select>
           <label class="form-label" for="project_id"><b>Choose a project:</b></label>
-          <select class="form-select" name="project_id" id="project_id"></select>
+          <select class="form-select" name="project_id" id="project_id"></select required>
     
           <div class="row">
             <div class="col">
@@ -241,8 +227,8 @@
           
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
           <div class="position-relative">
-            <button class="btn btn-primary btn-lg mb-3" type="submit" class="btn">Save task</button>
-            <button class="btn btn-secondary btn-lg mb-3" type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+            <button class="btn btn-primary btn-lg" type="submit" class="btn">Save task</button>
+            <button class="btn btn-secondary btn-lg" type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
           </div>
         </fieldset>
       </form>

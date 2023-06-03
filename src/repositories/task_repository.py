@@ -32,7 +32,7 @@ class TaskRepository:
         sql = text("INSERT INTO tasks (user_id, duration_hours, duration_minutes, " \
                    "task_date, customer_id, project_id, task_type_id, invoiceable, note) " \
                     "VALUES (:user_id, :duration_hours, :duration_minutes, " \
-                    ":task_date, :customer_id, :project_id, :task_type_id, :invoiceable, :note)")
+                    ":task_date, :customer_id, :project_id, :task_type_id, :invoiceable, :note);")
         self._db.session.execute(sql, task_values)
         self._db.session.commit()
 

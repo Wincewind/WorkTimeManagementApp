@@ -20,6 +20,7 @@ CREATE TABLE users (
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
     name TEXT,
+    manager_id INTEGER REFERENCES users(id),
     visible BOOLEAN DEFAULT TRUE
 );
 CREATE TABLE projects (
@@ -63,4 +64,5 @@ VALUES  ('Kiinteistöhuolto Oy'),
 INSERT INTO projects (name,customer_id) 
 VALUES  ('New homepage development',2),
         ('VR Glasses prototype',3),
+        ('AI Overlord',3),
         ('Cleaning floors', 1);

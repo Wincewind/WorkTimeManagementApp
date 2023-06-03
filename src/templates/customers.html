@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block title %}Customer Management{% endblock %}
+{% block content %}
+<head>
+    <link rel="stylesheet" href="/static/main.css">
+    <style>
+    </style>
+</head>
+<!-- <form action="/change-week" class="form-inline" method="GET">
+  <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
+  <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ chosen_date }}">
+</form> -->
+<br><br>
+<div class="text-center">
+    <h1>Customer Management</h1>
+    <h2>Create, delete or edit customer details<h2>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navigation</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-item nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Customer management 
+            </a>
+            <ul class="dropdown-menu bg-dark">
+              <li><a class="dropdown-item" href="/deselect-customer">Create a new customer</a></li>
+            </ul>
+          </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="#">Project management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="#">Query and export invoicing</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form action="/logout" class="form-inline">
+    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Sign Out</button>
+  </form>
+</nav>
+
+<form action="/select-customer" class="form-container" style="max-width: 20rem;" method="POST">
+    <label for="customer_id" class="form-label"><b>Select a customer to edit:</b></label>
+    <select class="form-select" name="customer_id" id="customer_id">
+        {% for customer in customers %}
+          <option value={{ customer[0] }}>{{ customer[1] }}</option>
+        {% endfor %}
+    </select>
+    <div class="position-relative">
+        <button class="btn btn-primary btn-lg mb-3" type="submit" class="btn">Select</button>
+    </div>
+</form>
+
+<div class="customer-form" id="customerForm">
+<div class="card bg-white text-dark" style="border-radius: 1rem;">
+<div class="card-body p-5">
+    <div class="text-center">
+    <h1>{% if chosen_customer is not none %}
+        Edit customer details
+        {% else %}
+        Create a new customer
+        {% endif %}
+    </h1>
+    </div>
+    <form action="/customers" class="form-container" method="POST">
+    <fieldset>
+      {% if chosen_customer is not none %}
+        <input type="hidden" name="customer_id" value="{{ chosen_customer['customer_id'] }}">
+      {% endif %}
+      <div class="input-group-text">
+      <div class="row">
+          <div class="col">
+            <label for="customer_name" class="form-label"><b>Name of customer:</b></label>
+            <input type="text" name="customer_name" id='customer_name' 
+              {% if chosen_customer is not none %}
+              value="{{ chosen_customer['customer_name'] }}"
+              {% endif %} required>
+          </div>
+          <div class="col">
+            <label for="manager_id" class="form-label"><b>Select manager for customer:</b></label>
+            <select class="form-select" name="manager_id" id="manager_id" required>
+              {% for manager in managers %}
+                <option value={{ manager.user_id }}
+                {% if chosen_customer is not none and chosen_customer['user_id'] == manager.user_id %}
+                  selected
+                {% endif %}>{{ manager.username }}</option>
+              {% endfor %}
+          </select>
+          </div>
+      </div>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+      <div class="position-relative m-2">
+      <button class="btn btn-primary btn-lg" name="save_button" type="submit" >Save</button>
+      <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit" >Cancel</button>
+      {% if chosen_customer is not none %}
+        <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button" type="submit" >Delete</button>
+      {% endif %}
+      </div>
+    </fieldset>
+    </form>
+</div>
+</div>
+</div>
+
+{% endblock %}
