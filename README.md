@@ -3,6 +3,41 @@ A web app to record work time for projects and keep track of customer invoicing 
 
 Current progress can be viewed online at http://tsoha-worktime-manager.fly.dev/
 
+## How to setup and run locally (tested in Uni Linux environment, some steps/commands might be different on Windows or Mac):
+1.  Clone the repository or download it as a zip:
+```bash
+git clone https://github.com/Wincewind/WorkTimeManagementApp.git
+```
+
+2.  In the project folder, create a virtual environment and activate it
+```bash
+python3 -m venv venv
+```
+```bash
+source venv/bin/activate
+```
+
+3.  Install required modules in the virtual env
+```bash
+pip install -r requirements.txt
+```
+
+4.  Start your PostgreSQL database if it's not running yet and create the required tables in psql using the schema.sql in the root folder.
+
+**Note that this will delete any existing tables of the same name!**
+```bash
+psql < schema.sql
+```
+
+5.  Create .env file for the environment variables and assign appropriate values for them
+
+The values in .env.example should work if it's just renamed to ".env", but generating your own secure SECRET_KEY is **highly** recommended!
+
+6.  The app should now be ready to run start. Remember to change active directory to src folder before running flask
+```bash
+cd src
+```
+
 ## App features currently implemented are marked with a ✔:
 
 - [x] Simple visuals created using Bootstrap ver 5.2 and customized when needed to create a more personalized look.
