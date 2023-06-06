@@ -43,8 +43,7 @@ cd src
 - [x] Simple visuals created using Bootstrap ver 5.2 and customized when needed to create a more personalized look.
 - [x] Navigation bar where different pages and their functions can be selected.
   - [x] With insufficient user role level, users can't access some pages (e.g. developer shouldn't access customer or project management)  and these navbar selections are also disabled.
-  - [ ] Add navbar to the layout.html.
-  - [ ] Make all the different page dropdowns avaialble from any page.
+  - [x] Add navbar to the layout.html.
 - [x] Home Page view where 
   - [x] tasks can be created
   - [x] a weekday table, that shows user's recorded tasks for that day.
