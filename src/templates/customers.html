@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block title %}Customer Management{% endblock %}
-{% block content %}
 <head>
     <link rel="stylesheet" href="/static/main.css">
     <style>
@@ -10,44 +9,25 @@
   <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
   <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ chosen_date }}">
 </form> -->
-<br><br>
-<div class="text-center">
+
+<!-- <div class="text-center">
     <h1>Customer Management</h1>
     <h2>Create, delete or edit customer details<h2>
-</div>
+</div> -->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navigation</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <a class="nav-item nav-link" href="/">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Customer management 
-            </a>
-            <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item" href="/deselect-customer">Create a new customer</a></li>
-            </ul>
-          </li>
-        <li class="nav-item">
-          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="#">Project management</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-item nav-link" href="#">Query and export invoicing</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <form action="/logout" class="form-inline">
-    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Sign Out</button>
-  </form>
-</nav>
+{% block h1 %}Customer Management{% endblock %}
+{% block h2 %}Create, delete or edit customer details{% endblock %}
+{% block navbar_customers %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Customer management 
+  </a>
+  <ul class="dropdown-menu bg-dark">
+    <li><a class="dropdown-item" href="/deselect-customer">Create a new customer</a></li>
+  </ul>
+</li>
+{% endblock %}
+{% block content %}
 
 <form action="/select-customer" class="form-container" style="max-width: 20rem;" method="POST">
     <label for="customer_id" class="form-label"><b>Select a customer to edit:</b></label>

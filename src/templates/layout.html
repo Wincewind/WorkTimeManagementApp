@@ -8,7 +8,57 @@
 </head>
 <title>WorkTimeManagementApp - {% block title %}{% endblock %}</title>
 <body>
-{% block content %}{% endblock %}
+    {% block headers %}
+    <div class="bg-dark">
+        {% block headers_addon %}
+        <br><br>
+        {% endblock %}
+        <div class="text-center">
+          <h1>{% block h1 %}{% endblock %}</h1>
+          <h2 id="week_num" style="margin: 0;">{% block h2 %}{% endblock %}</h2>
+        </div>
+    </div>
+    {% endblock %}
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navigation</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                {% block navbar_home %}
+                <li class="nav-item">
+                    <a class="nav-item nav-link" href="/">Home</a>
+                </li>
+                {% endblock %}
+                {% block navbar_customers %}
+                <li class="nav-item">
+                    <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="/customers">Customer management</a>
+                </li>
+                {% endblock %}
+                {% block navbar_projects %}
+                <li class="nav-item">
+                    <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="/projects">Project management</a>
+                </li>
+                {% endblock %}
+                {% block navbar_query %}
+                <li class="nav-item">
+                    <a class="nav-item nav-link" href="#">Query and export invoicing</a>
+                </li>
+                {% endblock %}
+            </ul>
+          </div>
+        </div>
+        <form action="/logout" class="form-inline">
+          <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Sign Out</button>
+        </form>
+      </nav>
+      {% endblock %}
+{% block content %}
+{% endblock %}
 </body>
 {% block script%}{% endblock %}
 {% include "flash.html" %}

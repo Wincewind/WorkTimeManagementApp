@@ -1,60 +1,26 @@
 {% extends "layout.html" %}
 {% block title %}Home Page{% endblock %}
-{% block content %}
-<head>
-    <link rel="stylesheet" href="/static/main.css">
-    <style>
-      #taskForm {
-        display: none;
-      }
-    </style>
-</head>
+
+
+{% block headers_addon %}
 <form action="/change-week" class="form-inline" method="GET">
   <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
   <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ chosen_date }}">
 </form>
+{% endblock %}
+{% block h1 %}Home Page{% endblock %}
 
-<div class="text-center">
-<h1>Home Page</h1>
-<h2 id="week_num"></h2>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navigation</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Home
-          </a>
-          <ul class="dropdown-menu bg-dark">
-            <li><a class="dropdown-item" onclick="openForm()" href="#">Create a task</a></li>
-          </ul>
-        </li>
-        <!-- <li class="nav-item active">
-          <a class="nav-item nav-link active" href="#"><span class="sr-only">Home</span></a>
-        </li> -->
-        
-        <li class="nav-item">
-          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="/customers">Customer management</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-item nav-link {% if session.user_level > 1 %}disabled{% endif %}" href="#">Project management</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-item nav-link" href="#">Query and export invoicing</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <form action="/logout" class="form-inline">
-    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Sign Out</button>
-  </form>
-</nav>
+  {% block navbar_home %}
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Home
+    </a>
+    <ul class="dropdown-menu bg-dark">
+      <li><a class="dropdown-item" onclick="openForm()" href="#">Create a task</a></li>
+    </ul>
+  </li>
+  {% endblock %}
+{% block content %}
 
 <div class="row">
 
@@ -173,11 +139,9 @@
   </div>
 </div>
 
-
-<div class="position-relative">
-  <div class="position-fixed top-50 start-50 translate-middle" id="taskForm">
-    <div class="card bg-white text-dark" style="border-radius: 1rem;">
-    <div class="card-body p-5">
+<div class="customer-form" id="taskForm" style="display: none;">
+  <div class="card bg-white text-dark" style="border-radius: 1rem;">
+  <div class="card-body p-5">
       <div class="text-center">
         <h1>Create a task</h1>
         <!-- <h2>Sign In</h2> -->
@@ -235,10 +199,10 @@
     </div>
     </div>
   </div>
-</div>
+{% endblock %}
 
+{% block script%}
 <script>
-
     function getSelectedCustomerName() {
     var el = document.getElementById('customer_id');
     return el.value;
