@@ -48,17 +48,17 @@ cd src
   - [x] tasks can be created
   - [x] a weekday table, that shows user's recorded tasks for that day.
   - [x] date selection that can be used to change the week to display.
-  - [ ] task cards can be clicked to open a menu to edit the task.
+  - [x] task cards can be clicked to open a menu to edit the task.
 - [x] Users can login to the app and create new developer and manager level credentials.
   - [ ] customer role.
 - Developers and managers can
   - [x] add
-  - [ ] remove
-  - [ ] modify
+  - [x] remove
+  - [x] modify
 
   done tasks towards a customer's projects.
   - [x] Users see only their tasks on the home page view.
-  - [ ] Developers can only modify their own tasks.
+  - [x] Developers can only modify their own tasks.
 - [ ] Statistical view where users can query for customer and project details from specific period of time.
 - [x] The type of the work has a specific cost allocated to it. 
   - [ ] senior developer modifier to this cost.
