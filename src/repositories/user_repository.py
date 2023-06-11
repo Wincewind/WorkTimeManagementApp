@@ -8,7 +8,7 @@ class UserRepository:
 
     def find_user(self, username):
         # try:
-        sql = text('SELECT * FROM users WHERE username=:username')
+        sql = text('SELECT id, username, password, role_id FROM users WHERE username=:username')
         return self._db.session.execute(sql, {"username":username}).fetchone()
         #return result
         # except:

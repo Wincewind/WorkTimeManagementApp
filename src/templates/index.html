@@ -5,7 +5,7 @@
 {% block headers_addon %}
 <form action="/change-week" class="form-inline" method="GET">
   <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
-  <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ chosen_date }}">
+  <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()' value="{{ session.chosen_date.strftime('%Y-%m-%d') }}">
 </form>
 {% endblock %}
 {% block h1 %}Home Page{% endblock %}
@@ -23,127 +23,40 @@
 {% block content %}
 
 <div class="row">
+  {% for weekday in ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] %}
+  <div class="col">
+    <h1>{{ weekday }}</h1>
+    {% for task in tasks %}
+      {% if task.task_date.strftime("%a") == weekday %}
+        <div class="row">
+          <form action="/select-task" method="GET">
+            <input type="hidden" name="task_id" value="{{ task.task_id }}">
+            <a class="text-decoration-none" onclick="this.parentNode.submit()" href="#">
+              <div class="card text-white mb-3" style="max-width: 18rem;">
+                <div class="card-header">{{ task.customer_name }}</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{ task.project_name }}</h5>
+                  <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
+                </div>
+              </div>
+            </a>
+          </form>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
 
-<div class="col">
-  <h1>Mon</h1>
-  {% for task in tasks %}
-    {% if task.task_date.weekday() == 0 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-</div>
-
-  <div class="col">
-    <h1>Tue</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 1 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-  <div class="col">
-    <h1>Wed</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 2 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-  <div class="col">
-    <h1>Thu</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 3 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-  <div class="col">
-    <h1>Fri</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 4 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-  <div class="col">
-    <h1>Sat</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 5 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-  <div class="col">
-    <h1>Sun</h1>
-    {% for task in tasks %}
-    {% if task.task_date.weekday() == 6 %}
-      <div class="row">
-        <div class="card text-white mb-3" style="max-width: 18rem;">
-          <div class="card-header">{{ task.customer_name }}</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ task.project_name }}</h5>
-            <p class="card-text">{{ task.task_desc }} - {{ task.duration_hours }}:{{ task.duration_minutes }}</p>
-          </div>
-          </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-  </div>
-</div>
-
-<div class="customer-form" id="taskForm" style="display: none;">
+<div class="task-form" id="taskForm" style="display: {{task_form_display}};">
   <div class="card bg-white text-dark" style="border-radius: 1rem;">
   <div class="card-body p-5">
       <div class="text-center">
-        <h1>Create a task</h1>
+        <h1>
+          {% if chosen_task is not none %}
+          Edit task details
+          {% else %}
+          Create a task
+          {% endif %}</h1>
         <!-- <h2>Sign In</h2> -->
       </div>
       <form action="/create-task" class="form-container" method="POST">
@@ -152,11 +65,17 @@
             <div class="row">
               <div class="col">
                 <label for="task_date" class="form-label"><b>Date of task:</b></label>
-                <input type="date" name="task_date" id='task_date' required>
+                <input type="date" name="task_date" id='task_date' 
+                {% if chosen_task is not none %}
+                  value="{{ chosen_task['task_date'].strftime('%Y-%m-%d') }}"
+                {% endif %} required></input>
               </div>
               <div class="col">
                 <label for="invoiceable" class="form-label"><b>Invoiceable work:</b></label>
-                <input type="checkbox" name="invoiceable" id='invoiceable'>
+                <input type="checkbox" name="invoiceable" id='invoiceable' 
+                {% if chosen_task['invoiceable'] %}
+                checked
+                {% endif %}>
               </div>
             </div>
           </div>
@@ -164,35 +83,61 @@
           <label for="customer_id" class="form-label"><b>Choose a customer:</b></label>
           <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()" required>
           {% for customer in customers %}
-            <option value={{ customer[0] }}>{{ customer[1] }}</option>
+            <option value={{ customer[0] }}
+              {% if chosen_task['customer_id'] == customer[0] %}
+                  selected
+              {% endif %}>{{ customer[1] }}</option>
           {% endfor %}
           </select>
           <label class="form-label" for="project_id"><b>Choose a project:</b></label>
-          <select class="form-select" name="project_id" id="project_id"></select required>
+          <select class="form-select" name="project_id" id="project_id" required>
+            {% if chosen_task is not none %}
+              {% for project in projects %}
+                {% if chosen_task['customer_id'] == project.customer_id %}
+                  <option value={{ chosen_task['project_id'] }}
+                  {% if chosen_task['project_id'] == project.project_id %}
+                  selected
+                  {% endif %}>
+                    {{ project.project_name }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </select>
     
           <div class="row">
             <div class="col">
               <label class="form-label" for="duration"><b>Task duration (hours:minutes):</b></label>
-              <input type="time" name="duration" id='duration' required>
+              <input type="time" name="duration" id='duration' 
+              {% if chosen_task is not none %}
+                value="{{ '%02d' % chosen_task['duration_hours']}}:{{ '%02d' % chosen_task['duration_minutes']}}"
+              {% endif %} 
+              required>
             </div>
           </div>
     
           <label class="form-label" for="task_type_id"><b>Type of task:</b></label>
           <select class="form-select" name="task_type_id" id="task_type_id">
           {% for task_type in task_types %}
-            <option value={{ task_type.id }}>{{ task_type.description }}</option>
+            <option value={{ task_type.id }}
+              {% if chosen_task['task_type_id'] == task_type.id %}
+                  selected
+              {% endif %}>{{ task_type.description }}</option>
           {% endfor %}
           </select>
           
           <div class="input-group-text m-3">
           <label class="form-label" for="note"><b>Task description:</b></label>
-          <textarea id="note" name="note" rows="4" cols="50" required></textarea>
+          <textarea id="note" name="note" rows="4" cols="50" required>{{ chosen_task['note'] }}</textarea>
         </div>
           
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
           <div class="position-relative">
-            <button class="btn btn-primary btn-lg" type="submit" class="btn">Save task</button>
-            <button class="btn btn-secondary btn-lg" type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+            <button class="btn btn-primary btn-lg" name="save_button" type="submit" >Save task</button>
+            <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit" onclick="removeFormRequirements()">Cancel</button>
+            {% if chosen_task is not none %}
+              <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button" type="submit" >Delete</button>
+            {% endif %}
           </div>
         </fieldset>
       </form>
@@ -230,6 +175,7 @@
     
     var projects = JSON.parse('{{ projects | tojson }}');
     console.log(projects);
+
     function updateProjectsList() {
       projectEl = document.getElementById("project_id");
       projectEl.innerHTML = '';
@@ -241,6 +187,14 @@
           projectEl.appendChild(option);
         }}
     }
-    updateProjectsList();
+
+    function removeFormRequirements() {
+      const nodeList = document.querySelectorAll(".task-form input, .task-form select, .task-form textarea");
+      for (let i = 0; i < nodeList.length; i++) {
+        console.log(nodeList[i].id);
+        nodeList[i].required = false;
+      }
+    }
 </script>
+{% if chosen_task is none %}<script>updateProjectsList();</script>{% endif%}
 {% endblock %}

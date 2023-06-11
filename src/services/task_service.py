@@ -22,4 +22,18 @@ class TaskService:
     def create_task(self,task):
         self.repository.create(task)
 
+    def get_task(self, task_id):
+        task = self.repository.get_task(task_id, session['user_id'])
+        if task is None:
+            return False
+        session["chosen_task"] = task._asdict()
+        print(session["chosen_task"])
+        return True
+    
+    def delete_task(self, task_id):
+        return self.repository.delete(task_id, session['user_id'])
+    
+    def edit_task(self, task):
+        self.repository.edit(task)
+
 task_service = TaskService()

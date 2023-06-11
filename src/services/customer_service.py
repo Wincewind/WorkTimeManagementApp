@@ -21,5 +21,4 @@ class CustomerService:
     def get_customer_details(self,customer_id):
         return self.repository.get_customer(customer_id)
 
-
 customer_service = CustomerService()
