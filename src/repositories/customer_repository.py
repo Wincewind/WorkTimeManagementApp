@@ -44,4 +44,27 @@ class CustomerRepository:
         except Exception as ex:
             print('Failed to get specific customer details: ',str(ex))
 
+    def get_project(self, project_id: int):
+        try:
+            sql = text("""SELECT id, customer_id, name, cost_limit, hour_limit,
+                        use_cost_limit, use_hour_limit FROM projects 
+                        WHERE id = :project_id AND visible = TRUE;""")
+            return self._db.session.execute(sql, {'project_id':project_id}).fetchone()
+        except Exception as ex:
+            print('Failed to get specific project details: ',str(ex))
+
+    def create_project(self, project_values: dict):
+        sql = text("""INSERT INTO projects (name, customer_id, hour_limit, cost_limit,
+                    use_hour_limit, use_cost_limit) VALUES (:project_name, :project_customer,
+                    :hour_limit, :cost_limit, :use_hour_limit, :use_cost_limit);""")
+        self._db.session.execute(sql, project_values)
+        self._db.session.commit()
+
+    def edit_project(self, project_values):
+        sql = text("""UPDATE projects SET name=:project_name, hour_limit=:hour_limit,
+                    cost_limit=:cost_limit, use_hour_limit=:use_hour_limit, use_cost_limit=:use_cost_limit
+                    WHERE id=:project_id AND customer_id=:project_customer;""")
+        self._db.session.execute(sql, project_values)
+        self._db.session.commit()
+
 customer_repository = CustomerRepository(db)

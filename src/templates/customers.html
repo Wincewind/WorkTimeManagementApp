@@ -20,7 +20,7 @@
 {% endblock %}
 {% block content %}
 
-<form action="/select-customer" class="form-container" style="max-width: 20rem;" method="POST">
+<form action="/select-customer" class="form-container" style="max-width: 20rem;" method="GET">
     <label for="customer_id" class="form-label"><b>Select a customer to edit:</b></label>
     <select class="form-select" name="customer_id" id="customer_id">
         {% for customer in customers %}

@@ -27,6 +27,8 @@ CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
     customer_id INTEGER REFERENCES customers(id),
     name TEXT,
+    use_cost_limit BOOLEAN DEFAULT FALSE,
+    use_hour_limit BOOleAN DEFAULT FALSE,
     cost_limit FLOAT,
     hour_limit INTEGER,
     visible BOOLEAN DEFAULT TRUE
@@ -61,8 +63,8 @@ INSERT INTO customers (name)
 VALUES  ('Kiinteistöhuolto Oy'),
         ('Sanomalehti Oy'),
         ('Google');
-INSERT INTO projects (name,customer_id) 
-VALUES  ('New homepage development',2),
-        ('VR Glasses prototype',3),
-        ('AI Overlord',3),
-        ('Cleaning floors', 1);
+INSERT INTO projects (name, customer_id, use_cost_limit, hour_limit) 
+VALUES  ('New homepage development',2, TRUE, 0),
+        ('VR Glasses prototype',3, FALSE, 10),
+        ('AI Overlord',3, TRUE, 20),
+        ('Cleaning floors', 1, FALSE, 100000);

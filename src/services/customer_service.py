@@ -20,5 +20,17 @@ class CustomerService:
 
     def get_customer_details(self,customer_id):
         return self.repository.get_customer(customer_id)
+    
+    def get_project_details(self,project_id):
+        return self.repository.get_project(project_id)
+    
+    def create_project(self,project):
+        self.repository.create_project(project)
+
+    def delete_project(self,project_id):
+        self.repository.delete_project(project_id)
+
+    def edit_project(self,project):
+        self.repository.edit_project(project)
 
 customer_service = CustomerService()

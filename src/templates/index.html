@@ -148,7 +148,7 @@
 
 {% block script%}
 <script>
-    function getSelectedCustomerName() {
+    function getSelectedCustomerId() {
     var el = document.getElementById('customer_id');
     return el.value;
     }
@@ -180,7 +180,7 @@
       projectEl = document.getElementById("project_id");
       projectEl.innerHTML = '';
       for (let i = 0; i < projects.length; i++) {
-        if (projects[i].customer_id == getSelectedCustomerName()){
+        if (projects[i].customer_id == getSelectedCustomerId() && projects[i].project_id != null ){
           var option = document.createElement("option");
           option.value = projects[i].project_id;
           option.text = projects[i].project_name;
@@ -191,7 +191,6 @@
     function removeFormRequirements() {
       const nodeList = document.querySelectorAll(".task-form input, .task-form select, .task-form textarea");
       for (let i = 0; i < nodeList.length; i++) {
-        console.log(nodeList[i].id);
         nodeList[i].required = false;
       }
     }
