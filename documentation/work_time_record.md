@@ -15,4 +15,6 @@
 | 8.6. | 2   | Modified task cards to be clickable |
 | 9.6. | 2   | Started implementing task selection and adding automatic filling of selected task details to its form |
 | 11.6. | 5   | Finished implementing task editing, deletion and selection cancellation in the home page view |
-| total | 41   | |
+| 15.6. | 2   | Started work on Projects page |
+| 17.6. | 4   | Worked on Projects page, added creation and edit functions |
+| total | 47   | |
