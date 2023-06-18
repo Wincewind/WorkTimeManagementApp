@@ -65,10 +65,11 @@ cd src
   - [ ] This cost will affect the invoicing for that project's customer.
 - [x] Project's can have cost limits 
   - [ ] that will cause alerts if the project invoicing is nearing that limit.
-  - [ ] These limits can also be set on workload in which case the time is measured.
+  - [x] These limits can also be set on workload in which case the time is measured.
+  - [ ] When applying cost or hour limit to project, the current recorded hour/cost balance is displayed beside it.
 - [x] Customers can be created, modified or removed by managers at which point the customer and its projects are set to visible = FALSE.
   - [x] When set invisible, customers and projects won't appear in selections, but any existing marked tasks will be visible.
-- [ ] Projects can be created, edited or removed.
+- [x] Projects can be created, edited or removed.
 - A task consists of 
   - [x] amount of the work in hours and minutes
   - [x] date, when the work was done
