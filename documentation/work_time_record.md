@@ -17,4 +17,5 @@
 | 11.6. | 5   | Finished implementing task editing, deletion and selection cancellation in the home page view |
 | 15.6. | 2   | Started work on Projects page |
 | 17.6. | 4   | Worked on Projects page, added creation and edit functions |
-| total | 47   | |
+| 18.6. | 2   | Added delete function to projects |
+| total | 49   | |
