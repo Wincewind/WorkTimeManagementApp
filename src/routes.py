@@ -153,7 +153,7 @@ def create_task():
 def change_week():
     try:
         session["chosen_date"] = datetime.fromisoformat(request.args["chosen_date"])
-    except AttributeError:
+    except ValueError:
         session["chosen_date"] = datetime.today()
     return redirect("/")
 
