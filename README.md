@@ -3,6 +3,8 @@ A web app to record work time for projects and keep track of customer invoicing 
 
 Current progress can be viewed online at http://tsoha-worktime-manager.fly.dev/
 
+When signing in, the site might crash sometimes. Reloading the page/signing in again should work. I think it has something to do with the time it takes for the db connections to wake up with fly.io after the apps have been idle for long enough.   
+
 ## How to setup and run locally (tested in Uni Linux environment, some steps/commands might be different on Windows or Mac):
 1.  Clone the repository or download it as a zip:
 ```bash
