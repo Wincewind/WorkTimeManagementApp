@@ -1,5 +1,5 @@
-from flask import redirect, render_template, request, session, flash
 from datetime import datetime
+from flask import redirect, render_template, request, session, flash
 from app import app
 from services.user_service import user_service
 from services.task_service import task_service
@@ -236,13 +236,12 @@ def projects():
             "delete_button" in request.form
             and session.get("chosen_project", None) is not None
         ):
-            # customer_service.delete_project(request.form["project_id"])
+            customer_service.delete_project(request.form["project_id"])
             return redirect("/deselect-project")
 
         if "save_button" in request.form:
             project = {"use_cost_limit": False, "use_hour_limit": False}
             for val in request.form:
-                print(val)
                 if val in [
                     "project_customer",
                     "project_name",
@@ -282,19 +281,14 @@ def projects():
 @app.route("/select-project")
 def select_project():
     user_service.check_user_role_level(1)
-    session["chosen_customer"] = customer_service.get_customer_details(
-        request.args["customer_id"]
-    )._asdict()
-    if request.args["selected_project"] != "new":
+    if "selected_project" in request.args:
         session["chosen_project"] = customer_service.get_project_details(
             request.args["selected_project"]
         )._asdict()
     return redirect("/projects")
 
-
 @app.route("/deselect-project")
 def deselect_project():
     if session.get("chosen_project", None) is not None:
-        del session["chosen_customer"]
         del session["chosen_project"]
     return redirect("/projects")

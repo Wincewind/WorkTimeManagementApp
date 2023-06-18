@@ -134,10 +134,10 @@
     function updateProjectsList() {
         projectEl = document.getElementById("selected_project");
         projectEl.innerHTML = '';
-        var option = document.createElement("option");
-        option.value = "new";
-        option.text = "Create a new project";
-        projectEl.appendChild(option);
+        // var option = document.createElement("option");
+        // option.value = "new";
+        // option.text = "Create a new project";
+        // projectEl.appendChild(option);
         for (let i = 0; i < projects.length; i++) {
         if (projects[i].customer_id == getSelectedCustomerId() && projects[i].project_id != null){
             var option = document.createElement("option");

@@ -6,11 +6,11 @@ class CustomerRepository:
         self._db = db
 
     def get_customers_and_projects(self):
-        sql = text("SELECT customers.id as customer_id, customers.name as customer_name, " \
-                   "projects.id as project_id, projects.name as project_name FROM customers " \
-                   "LEFT JOIN projects ON customer_id=customers.id " \
-                   "WHERE customers.visible = TRUE AND COALESCE(projects.visible,'TRUE') <> 'FALSE' " \
-                    "GROUP BY customers.id, projects.id;")
+        sql = text("""SELECT customers.id as customer_id, customers.name as customer_name,
+                    projects.id as project_id, projects.name as project_name FROM customers
+                    LEFT JOIN projects ON customer_id=customers.id
+                    WHERE customers.visible = TRUE AND (projects.visible = TRUE OR projects.id IS NULL)
+                    GROUP BY customers.id, projects.id;""")
         return self._db.session.execute(sql).fetchall()
     
     def create(self, customer_values: dict):
@@ -35,11 +35,11 @@ class CustomerRepository:
 
     def get_customer(self, customer_id: int):
         try:
-            sql = text("SELECT customers.id as customer_id, customers.name as customer_name, " \
-                       "users.id as user_id, username FROM customers LEFT JOIN " \
-                        "users ON users.id = manager_id " \
-                        "WHERE customers.id = :customer_id " \
-                        "GROUP BY customers.id, users.id;")
+            sql = text("""SELECT customers.id as customer_id, customers.name as customer_name,
+                        users.id as user_id, username FROM customers LEFT JOIN
+                        users ON users.id = manager_id
+                        WHERE customers.id = :customer_id
+                        GROUP BY customers.id, users.id;""")
             return self._db.session.execute(sql, {'customer_id':customer_id}).fetchone()
         except Exception as ex:
             print('Failed to get specific customer details: ',str(ex))
@@ -66,5 +66,14 @@ class CustomerRepository:
                     WHERE id=:project_id AND customer_id=:project_customer;""")
         self._db.session.execute(sql, project_values)
         self._db.session.commit()
+
+    def delete_project(self, project_id: int):
+        try:
+            sql = text("UPDATE projects SET visible = False WHERE id = :project_id;")
+            self._db.session.execute(sql, {'project_id':project_id})
+            self._db.session.commit()
+        except Exception as ex:
+            print('Failed to remove project entry: ',str(ex))
+
 
 customer_repository = CustomerRepository(db)
