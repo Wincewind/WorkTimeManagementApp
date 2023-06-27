@@ -287,6 +287,7 @@ def select_project():
         )._asdict()
     return redirect("/projects")
 
+
 @app.route("/deselect-project")
 def deselect_project():
     if session.get("chosen_project", None) is not None:

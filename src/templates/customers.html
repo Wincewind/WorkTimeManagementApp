@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Customer Management{% endblock %}
+
 <head>
-    <link rel="stylesheet" href="/static/main.css">
-    <style>
-    </style>
+  <link rel="stylesheet" href="/static/main.css">
+  <style>
+  </style>
 </head>
 
 {% block h1 %}Customer Management{% endblock %}
@@ -11,7 +12,7 @@
 {% block navbar_customers %}
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Customer management 
+    Customer management
   </a>
   <ul class="dropdown-menu bg-dark">
     <li><a class="dropdown-item" href="/deselect-customer">Create a new customer</a></li>
@@ -21,67 +22,64 @@
 {% block content %}
 
 <form action="/select-customer" class="form-container" style="max-width: 20rem;" method="GET">
-    <label for="customer_id" class="form-label"><b>Select a customer to edit:</b></label>
-    <select class="form-select" name="customer_id" id="customer_id">
-        {% for customer in customers %}
-          <option value={{ customer[0] }}>{{ customer[1] }}</option>
-        {% endfor %}
-    </select>
-    <div class="position-relative">
-        <button class="btn btn-primary btn-lg mb-3" type="submit" class="btn">Select</button>
-    </div>
+  <label for="customer_id" class="form-label"><b>Select a customer to edit:</b></label>
+  <select class="form-select" name="customer_id" id="customer_id">
+    {% for customer in customers %}
+    <option value={{ customer[0] }}>{{ customer[1] }}</option>
+    {% endfor %}
+  </select>
+  <div class="position-relative">
+    <button class="btn btn-primary btn-lg mb-3" type="submit" class="btn">Select</button>
+  </div>
 </form>
 
 <div class="customer-form" id="customerForm">
-<div class="card bg-white text-dark" style="border-radius: 1rem;">
-<div class="card-body p-5">
-    <div class="text-center">
-    <h1>{% if chosen_customer is not none %}
-        Edit customer details
-        {% else %}
-        Create a new customer
-        {% endif %}
-    </h1>
+  <div class="card bg-white text-dark" style="border-radius: 1rem;">
+    <div class="card-body p-5">
+      <div class="text-center">
+        <h1>{% if chosen_customer is not none %}
+          Edit customer details
+          {% else %}
+          Create a new customer
+          {% endif %}
+        </h1>
+      </div>
+      <form action="/customers" class="form-container" method="POST">
+        <fieldset>
+          {% if chosen_customer is not none %}
+          <input type="hidden" name="customer_id" value="{{ chosen_customer['customer_id'] }}">
+          {% endif %}
+          <div class="input-group-text">
+            <div class="row">
+              <div class="col">
+                <label for="customer_name" class="form-label"><b>Name of customer:</b></label>
+                <input type="text" name="customer_name" id='customer_name' {% if chosen_customer is not none %}
+                  value="{{ chosen_customer['customer_name'] }}" {% endif %} required>
+              </div>
+              <div class="col">
+                <label for="manager_id" class="form-label"><b>Select manager for customer:</b></label>
+                <select class="form-select" name="manager_id" id="manager_id" required>
+                  {% for manager in managers %}
+                  <option value={{ manager.user_id }} {% if chosen_customer is not none and
+                    chosen_customer['user_id']==manager.user_id %} selected {% endif %}>{{ manager.username }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <div class="position-relative m-2">
+            <button class="btn btn-primary btn-lg" name="save_button" type="submit">Save</button>
+            <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit">Cancel</button>
+            {% if chosen_customer is not none %}
+            <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button"
+              type="submit">Delete</button>
+            {% endif %}
+          </div>
+        </fieldset>
+      </form>
     </div>
-    <form action="/customers" class="form-container" method="POST">
-    <fieldset>
-      {% if chosen_customer is not none %}
-        <input type="hidden" name="customer_id" value="{{ chosen_customer['customer_id'] }}">
-      {% endif %}
-      <div class="input-group-text">
-      <div class="row">
-          <div class="col">
-            <label for="customer_name" class="form-label"><b>Name of customer:</b></label>
-            <input type="text" name="customer_name" id='customer_name' 
-              {% if chosen_customer is not none %}
-              value="{{ chosen_customer['customer_name'] }}"
-              {% endif %} required>
-          </div>
-          <div class="col">
-            <label for="manager_id" class="form-label"><b>Select manager for customer:</b></label>
-            <select class="form-select" name="manager_id" id="manager_id" required>
-              {% for manager in managers %}
-                <option value={{ manager.user_id }}
-                {% if chosen_customer is not none and chosen_customer['user_id'] == manager.user_id %}
-                  selected
-                {% endif %}>{{ manager.username }}</option>
-              {% endfor %}
-          </select>
-          </div>
-      </div>
-      </div>
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-      <div class="position-relative m-2">
-      <button class="btn btn-primary btn-lg" name="save_button" type="submit" >Save</button>
-      <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit" >Cancel</button>
-      {% if chosen_customer is not none %}
-        <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button" type="submit" >Delete</button>
-      {% endif %}
-      </div>
-    </fieldset>
-    </form>
-</div>
-</div>
+  </div>
 </div>
 
 {% endblock %}

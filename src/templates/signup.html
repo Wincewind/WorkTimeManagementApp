@@ -3,6 +3,7 @@
 {% block headers %}{% endblock %}
 {% block navbar %}{% endblock %}
 {% block content %}
+
 <head>
     <link rel="stylesheet" href="/static/main.css">
 </head>
@@ -12,28 +13,31 @@
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5">
                     <div class="text-center">
-                        <h1 >Work Time Manager</h1>
+                        <h1>Work Time Manager</h1>
                         <h2>Sign Up</h2>
                     </div>
                     <form action="/signup" method="POST">
                         <div class="form-outline mb-4">
                             <label for="username" class="form-label">Username</label>
-                            <input class="form-control" id="username" type="text" name="username" minlength={min_un_len} maxlength="20">
+                            <input class="form-control" id="username" type="text" name="username" minlength={min_un_len}
+                                maxlength="20">
                         </div>
                         <div class="form-outline mb-4">
                             <label for="password" class="form-label">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" minlength={min_pw_len} maxlength="30">
+                            <input class="form-control" type="password" id="password" name="password"
+                                minlength={min_pw_len} maxlength="30">
                         </div>
                         <div class="form-outline mb-4">
-                          <label for="role" class="form-label">Choose a user role</label>
-                          <select class="form-select-lg mb-5" name="role" id="role">
-                            {% for role in roles %}
-                            <option value={{ role.id }}>{{ role.name }}</option>
-                            {% endfor %}
-                          </select>
+                            <label for="role" class="form-label">Choose a user role</label>
+                            <select class="form-select-lg mb-5" name="role" id="role">
+                                {% for role in roles %}
+                                <option value={{ role.id }}>{{ role.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-outline mb-5 pb-lg-2 text-center">
-                            <input class="btn btn-outline-light btn-lg px-5 mb-2" type="submit" value="Create new credentials">
+                            <input class="btn btn-outline-light btn-lg px-5 mb-2" type="submit"
+                                value="Create new credentials">
                         </div>
                     </form>
                 </div>

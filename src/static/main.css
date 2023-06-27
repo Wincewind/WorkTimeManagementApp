@@ -3,34 +3,38 @@ body {
     color: white;
 }
 
-h1, h2, .navbar a, .navbar .sr-only{
+h1,
+h2,
+.navbar a,
+.navbar .sr-only {
     color: rgb(255, 105, 5);
 }
 
-.row .card{
+.row .card {
     background-color: rgb(255, 105, 5);
 }
 
-.nav-link.disabled{
+.nav-link.disabled {
     color: rgb(255, 105, 5, 0.5);
 }
 
-.project-form, .customer-form{
+.project-form,
+.customer-form {
     margin: auto;
     border: 20em;
     max-width: 60em;
 }
 
-.task-form{
+.task-form {
     margin: auto;
     position: absolute;
     top: 50vh;
     left: 50vw;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     max-width: 50em;
 }
 
-.project-form .row :is(label, select, input){
+.project-form .row :is(label, select, input) {
     display: inline-block;
     max-width: 15em;
 }

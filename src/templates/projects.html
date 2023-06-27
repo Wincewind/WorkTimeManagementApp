@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Project Management{% endblock %}
+
 <head>
-    <link rel="stylesheet" href="/static/main.css">
-    <style>
-    </style>
+  <link rel="stylesheet" href="/static/main.css">
+  <style>
+  </style>
 </head>
 
 {% block h1 %}Project Management{% endblock %}
@@ -11,7 +12,7 @@
 {% block navbar_projects %}
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Project management 
+    Project management
   </a>
   <ul class="dropdown-menu bg-dark">
     <li><a class="dropdown-item" href="/deselect-project">Create a new project for customer</a></li>
@@ -22,157 +23,151 @@
 
 <form action="/select-project" class="form-container" style="max-width: 40rem;" method="GET">
   <div class="row">
-      <label for="customer_id" class="form-label"><b>Select a customer project to edit:</b></label>
+    <label for="customer_id" class="form-label"><b>Select a customer project to edit:</b></label>
   </div>
   <div class="row">
-  <div class="col">
+    <div class="col">
       <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()">
-          {% for customer in customers %}
-            <option value={{ customer[0] }}>{{ customer[1] }}</option>
-          {% endfor %}
+        {% for customer in customers %}
+        <option value={{ customer[0] }}>{{ customer[1] }}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="col">
       <select class="form-select" name="selected_project" id="selected_project">
       </select>
     </div>
-    </div>
-      <div class="position-relative">
-          <button class="btn btn-primary btn-lg m-3" type="submit" class="btn">Select</button>
-      </div>
-    </div>
+  </div>
+  <div class="position-relative">
+    <button class="btn btn-primary btn-lg m-3" type="submit" class="btn">Select</button>
+  </div>
+  </div>
   </div>
 </form>
 
 <div class="project-form" id="projectForm">
-<div class="card bg-white text-dark" style="border-radius: 1rem;">
-<div class="card-body p-5">
-    <div class="text-center">
-    <h1>{% if chosen_project is not none %}
-        Edit project details
-        {% else %}
-        Create a new project
-        {% endif %}
-    </h1>
-    </div>
-    <form action="/projects" class="form-container" method="POST">
-    <fieldset>
-      <div class="row input-group-text m-2">
-        <div class="col">
-          <label for="project_customer" class="form-label"><b>Customer:</b></label>
-            <select class="form-select" name="project_customer" id='project_customer'
+  <div class="card bg-white text-dark" style="border-radius: 1rem;">
+    <div class="card-body p-5">
+      <div class="text-center">
+        <h1>{% if chosen_project is not none %}
+          Edit project details
+          {% else %}
+          Create a new project
+          {% endif %}
+        </h1>
+      </div>
+      <form action="/projects" class="form-container" method="POST">
+        <fieldset>
+          <div class="row input-group-text m-2">
+            <div class="col">
+              <label for="project_customer" class="form-label"><b>Customer:</b></label>
+              <select class="form-select" name="project_customer" id='project_customer' {% if chosen_project is not none
+                %} disabled {% endif %} required>
+                {% for customer in customers %}
+                <option value={{ customer[0] }} {% if chosen_project['customer_id']==customer[0] %} selected {% endif
+                  %}>{{ customer[1] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col">
+              <label for="project_name" class="form-label"><b>Project name:</b></label>
+              <input type="text" name="project_name" id='project_name' value="{{ chosen_project['name'] }}" required>
+            </div>
+          </div>
+
+          <div class="block m-2">
+            <label for="use_cost_limit" class="form-check-label"><b>Apply cost limit to project:</b></label>
+            <input type="checkbox" class="form-check-input" name="use_cost_limit" id='use_cost_limit' {% if
+              chosen_project['use_cost_limit'] %} checked {% endif %} onchange="toggleProjectLimitSettingsVisibility()">
+          </div>
+          <div id="cost_limit_settings" class="block m-2">
+            <label for="cost_limit" class="form-label"><b>Project's cost limit:</b></label>
+            <input type="number" name="cost_limit" id='cost_limit' value="{{ chosen_project['cost_limit'] }}">
+          </div>
+
+          <div class="block m-2">
+            <label for="use_hour_limit" class="form-check-label"><b>Apply hour limit to project:</b></label>
+            <input type="checkbox" class="form-check-input" name="use_hour_limit" id='use_hour_limit' {% if
+              chosen_project['use_hour_limit'] %} checked {% endif %} onchange="toggleProjectLimitSettingsVisibility()">
+          </div>
+          <div id="hour_limit_settings" class="block m-2">
+            <label for="hour_limit" class="form-label"><b>Project's hour limit:</b></label>
+            <input type="number" name="hour_limit" id='hour_limit' value="{{ chosen_project['hour_limit'] }}">
+          </div>
+
+          {% if chosen_project is not none %}
+          <input type="hidden" name="project_id" value="{{ chosen_project['id'] }}">
+          <input type="hidden" name="project_customer" value="{{ chosen_project['customer_id'] }}">
+          {% endif %}
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <div class="position-relative m-2">
+            <button class="btn btn-primary btn-lg" name="save_button" type="submit">Save</button>
+            <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit"
+              onclick="removeFormRequirements()">Cancel</button>
             {% if chosen_project is not none %}
-              disabled
-            {% endif %} required>
-              {% for customer in customers %}
-                <option value={{ customer[0] }}
-                {% if chosen_project['customer_id'] == customer[0] %}
-                  selected
-                {% endif %}
-                >{{ customer[1] }}</option>
-              {% endfor %}
-            </select>
+            <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button"
+              type="submit">Delete</button>
+            {% endif %}
           </div>
-          <div class="col">
-            <label for="project_name" class="form-label"><b>Project name:</b></label>
-            <input type="text" name="project_name" id='project_name' value="{{ chosen_project['name'] }}" required>
-          </div>
-      </div>
-
-      <div class="block m-2">
-        <label for="use_cost_limit" class="form-check-label"><b>Apply cost limit to project:</b></label>
-        <input type="checkbox" class="form-check-input" name="use_cost_limit" id='use_cost_limit' 
-        {% if chosen_project['use_cost_limit'] %}
-          checked
-        {% endif %} onchange="toggleProjectLimitSettingsVisibility()">
-      </div>
-      <div id="cost_limit_settings" class="block m-2">
-        <label for="cost_limit" class="form-label"><b>Project's cost limit:</b></label>
-        <input type="number" name="cost_limit" id='cost_limit' value="{{ chosen_project['cost_limit'] }}">
-      </div>
-
-      <div class="block m-2">
-        <label for="use_hour_limit" class="form-check-label"><b>Apply hour limit to project:</b></label>
-        <input type="checkbox" class="form-check-input" name="use_hour_limit" id='use_hour_limit' 
-        {% if chosen_project['use_hour_limit'] %}
-          checked
-        {% endif %} onchange="toggleProjectLimitSettingsVisibility()">
-      </div>
-      <div id="hour_limit_settings" class="block m-2">
-        <label for="hour_limit" class="form-label"><b>Project's hour limit:</b></label>
-        <input type="number" name="hour_limit" id='hour_limit' value="{{ chosen_project['hour_limit'] }}">
-      </div>
-
-      {% if chosen_project is not none %}
-        <input type="hidden" name="project_id" value="{{ chosen_project['id'] }}">
-        <input type="hidden" name="project_customer" value="{{ chosen_project['customer_id'] }}">
-      {% endif %}
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-      <div class="position-relative m-2">
-      <button class="btn btn-primary btn-lg" name="save_button" type="submit" >Save</button>
-      <button class="btn btn-secondary btn-lg" name="cancel_button" type="submit" onclick="removeFormRequirements()">Cancel</button>
-      {% if chosen_project is not none %}
-        <button class="btn btn-danger btn-lg position-sticky start-100" name="delete_button" type="submit" >Delete</button>
-      {% endif %}
-      </div>
-    </fieldset>
-    </form>
-</div>
-</div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
 {% block script%}
 <script>
-    function getSelectedCustomerId() {
+  function getSelectedCustomerId() {
     var el = document.getElementById('customer_id');
     return el.value;
-    }
+  }
 
-    var projects = JSON.parse('{{ projects | tojson }}');
+  var projects = JSON.parse('{{ projects | tojson }}');
 
-    function updateProjectsList() {
-        projectEl = document.getElementById("selected_project");
-        projectEl.innerHTML = '';
-        // var option = document.createElement("option");
-        // option.value = "new";
-        // option.text = "Create a new project";
-        // projectEl.appendChild(option);
-        for (let i = 0; i < projects.length; i++) {
-        if (projects[i].customer_id == getSelectedCustomerId() && projects[i].project_id != null){
-            var option = document.createElement("option");
-            option.value = projects[i].project_id;
-            option.text = projects[i].project_name;
-            projectEl.appendChild(option);
-        }}
-    }
-
-    function toggleProjectLimitSettingsVisibility() {
-      useCostLimitEl = document.getElementById("use_cost_limit");
-      if (useCostLimitEl.checked == true) {
-        document.getElementById("cost_limit_settings").style.display = "block";
-      }
-      else {
-        document.getElementById("cost_limit_settings").style.display = "none";
-      }
-
-      useHourLimitEl = document.getElementById("use_hour_limit");
-      if (useHourLimitEl.checked == true) {
-        document.getElementById("hour_limit_settings").style.display = "block";
-      }
-      else {
-        document.getElementById("hour_limit_settings").style.display = "none";
+  function updateProjectsList() {
+    projectEl = document.getElementById("selected_project");
+    projectEl.innerHTML = '';
+    // var option = document.createElement("option");
+    // option.value = "new";
+    // option.text = "Create a new project";
+    // projectEl.appendChild(option);
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i].customer_id == getSelectedCustomerId() && projects[i].project_id != null) {
+        var option = document.createElement("option");
+        option.value = projects[i].project_id;
+        option.text = projects[i].project_name;
+        projectEl.appendChild(option);
       }
     }
+  }
 
-    function removeFormRequirements() {
-      const nodeList = document.querySelectorAll(".project-form :is(input, select");
-      for (let i = 0; i < nodeList.length; i++) {
-        nodeList[i].required = false;
-      }
+  function toggleProjectLimitSettingsVisibility() {
+    useCostLimitEl = document.getElementById("use_cost_limit");
+    if (useCostLimitEl.checked == true) {
+      document.getElementById("cost_limit_settings").style.display = "block";
+    }
+    else {
+      document.getElementById("cost_limit_settings").style.display = "none";
     }
 
-    updateProjectsList();
-    toggleProjectLimitSettingsVisibility();
-  </script>
-  {% endblock %}
+    useHourLimitEl = document.getElementById("use_hour_limit");
+    if (useHourLimitEl.checked == true) {
+      document.getElementById("hour_limit_settings").style.display = "block";
+    }
+    else {
+      document.getElementById("hour_limit_settings").style.display = "none";
+    }
+  }
+
+  function removeFormRequirements() {
+    const nodeList = document.querySelectorAll(".project-form :is(input, select");
+    for (let i = 0; i < nodeList.length; i++) {
+      nodeList[i].required = false;
+    }
+  }
+
+  updateProjectsList();
+  toggleProjectLimitSettingsVisibility();
+</script>
+{% endblock %}

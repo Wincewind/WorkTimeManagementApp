@@ -3,6 +3,7 @@
 {% block headers %}{% endblock %}
 {% block navbar %}{% endblock %}
 {% block content %}
+
 <head>
     <link rel="stylesheet" href="/static/main.css">
 </head>
@@ -12,7 +13,7 @@
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5">
                     <div class="text-center">
-                        <h1 >Work Time Manager</h1>
+                        <h1>Work Time Manager</h1>
                         <h2>Sign In</h2>
                     </div>
                     <form action="/login" method="POST">
@@ -26,9 +27,9 @@
                         </div>
                         <div class="form-outline mb-5 pb-lg-2 text-center">
                             <input class="btn btn-outline-light btn-lg px-5 mb-2" type="submit" value="Login">
-                        <p class="small mb-5 pb-lg-2">
-                            <a class="text-white-50 fw-bold" href="/signup">Create a new account</a>
-                        </p>
+                            <p class="small mb-5 pb-lg-2">
+                                <a class="text-white-50 fw-bold" href="/signup">Create a new account</a>
+                            </p>
                         </div>
                     </form>
                 </div>
