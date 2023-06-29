@@ -5,9 +5,14 @@ body {
 
 h1,
 h2,
+.navbar span,
 .navbar a,
 .navbar .sr-only {
     color: rgb(255, 105, 5);
+}
+
+.navbar span {
+    font-size: 150%;
 }
 
 .row .card {

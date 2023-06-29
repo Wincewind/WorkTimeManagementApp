@@ -6,7 +6,10 @@ class CustomerRepository:
     def __init__(self, db_) -> None:
         self._db = db_
 
-    def get_customers_and_projects(self):
+    def get_visible_customers_and_projects(self):
+        """Get visible customers and their visible projects from
+        repository. If customer doesn't have any projects, it's still selected.
+        """
         sql = text(
             """SELECT customers.id as customer_id, customers.name as customer_name,
             projects.id as project_id, projects.name as project_name FROM customers
@@ -18,6 +21,11 @@ class CustomerRepository:
         return self._db.session.execute(sql).fetchall()
 
     def create(self, customer_values: dict):
+        """Add a customer to the repository.
+
+        Args:
+            customer_values (dict): the customer's name and managing user's id.
+        """
         sql = text(
             "INSERT INTO customers (name, manager_id) VALUES (:customer_name, :manager_id);"
         )
@@ -25,6 +33,11 @@ class CustomerRepository:
         self._db.session.commit()
 
     def delete(self, customer_id: int):
+        """Set customer's visibility to False.
+
+        Args:
+            customer_id (int): id of the customer to modify.
+        """
         try:
             sql = text("UPDATE customers SET visible = False WHERE id = :customer_id;")
             self._db.session.execute(sql, {"customer_id": customer_id})
@@ -36,7 +49,8 @@ class CustomerRepository:
         except Exception as ex:
             print("Failed to remove customer entry: ", str(ex))
 
-    def edit(self, customer_values):
+    def edit(self, customer_values: dict):
+        """Edit customer's name or manager."""
         sql = text(
             """UPDATE customers SET name=:customer_name,
             manager_id=:manager_id WHERE id=:customer_id;"""
@@ -45,6 +59,7 @@ class CustomerRepository:
         self._db.session.commit()
 
     def get_customer(self, customer_id: int):
+        """Get a specific customer's details.'"""
         try:
             sql = text(
                 """SELECT customers.id as customer_id, customers.name as customer_name,
@@ -60,6 +75,7 @@ class CustomerRepository:
             print("Failed to get specific customer details: ", str(ex))
 
     def get_project(self, project_id: int):
+        """Get a specific project's details."""
         try:
             sql = text(
                 """SELECT id, customer_id, name, cost_limit, hour_limit,
@@ -71,6 +87,7 @@ class CustomerRepository:
             print("Failed to get specific project details: ", str(ex))
 
     def create_project(self, project_values: dict):
+        """Create a new project in the repository"""
         sql = text(
             """INSERT INTO projects (name, customer_id, hour_limit, cost_limit,
                     use_hour_limit, use_cost_limit) VALUES (:project_name, :project_customer,
@@ -80,6 +97,7 @@ class CustomerRepository:
         self._db.session.commit()
 
     def edit_project(self, project_values):
+        """Edit a specific project's details."""
         sql = text(
             """UPDATE projects SET name=:project_name, hour_limit=:hour_limit,
             cost_limit=:cost_limit, use_hour_limit=:use_hour_limit,
@@ -90,6 +108,7 @@ class CustomerRepository:
         self._db.session.commit()
 
     def delete_project(self, project_id: int):
+        "Set a project's visibility to False."
         try:
             sql = text("UPDATE projects SET visible = False WHERE id = :project_id;")
             self._db.session.execute(sql, {"project_id": project_id})

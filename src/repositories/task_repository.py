@@ -7,7 +7,13 @@ class TaskRepository:
     def __init__(self, db_) -> None:
         self._db = db_
 
-    def get_weeks_tasks(self, user_id: int, week_num: int):
+    def get_weeks_tasks(self, user_id: int, week_num: int, year: int):
+        """Get a week's tasks for a specific user.
+
+        Args:
+            user_id (int): user_id of the owner of the task.
+            week_num (int): number of the week.
+            year (int): year from which the week is checked."""
         sql = text(
             """SELECT tasks.id as task_id, task_date, duration_hours,
             duration_minutes, customers.name as customer_name,
@@ -16,27 +22,26 @@ class TaskRepository:
             LEFT JOIN projects ON project_id=projects.id
             LEFT JOIN task_types ON task_type_id=task_types.id
             WHERE user_id =:user_id AND DATE_PART('week',task_date)=:week_num
-            GROUP BY tasks.id, customers.id, projects.id, task_types.id;"""
+            AND DATE_PART('year',task_date)=:year GROUP BY tasks.id,
+            customers.id, projects.id, task_types.id;"""
         )
         tasks = self._db.session.execute(
-            sql, {"user_id": user_id, "week_num": week_num}
+            sql, {"user_id": user_id, "week_num": week_num, "year": year}
         ).fetchall()
         return tasks
 
-    def get_customers_and_projects(self):
-        sql = text(
-            """SELECT customers.id as customer_id, customers.name as customer_name,
-                   projects.id as project_id, projects.name as project_name FROM customers
-                   LEFT JOIN projects ON customer_id=customers.id
-                   WHERE customers.visible = TRUE AND projects.visible = TRUE
-                    GROUP BY customers.id, projects.id;"""
-        )
-        return self._db.session.execute(sql).fetchall()
-
     def get_types(self):
-        return self._db.session.execute(text("SELECT * FROM task_types;"))
+        """Get available task type information from repository.
+
+        Returns:
+            sqlalchemy result object: task type ids, descriptions and hourly costs
+        """
+        return self._db.session.execute(
+            text("SELECT id, description, hourly_cost FROM task_types;")
+        )
 
     def create(self, task_values: dict):
+        """Add a new task to repository."""
         sql = text(
             """INSERT INTO tasks (user_id, duration_hours, duration_minutes,
                    task_date, customer_id, project_id, task_type_id, invoiceable, note)
@@ -47,6 +52,7 @@ class TaskRepository:
         self._db.session.commit()
 
     def get_task(self, task_id, user_id):
+        """Get a specific task's details."""
         sql = text(
             """SELECT id, task_date, duration_hours, duration_minutes, customer_id,
         project_id, task_type_id, invoiceable, note FROM tasks
@@ -57,6 +63,7 @@ class TaskRepository:
         ).fetchone()
 
     def delete(self, task_id, user_id):
+        "Remove task from repository."
         sql_sel = text("SELECT FROM tasks WHERE user_id=:user_id AND id=:task_id;")
         if (
             len(
@@ -82,6 +89,7 @@ class TaskRepository:
         return True
 
     def edit(self, task_values: dict):
+        "Edit a task's details."
         sql = text(
             """UPDATE tasks SET duration_hours=:duration_hours,
                     duration_minutes=:duration_minutes, task_date=:task_date,
