@@ -18,4 +18,6 @@
 | 15.6. | 2   | Started work on Projects page |
 | 17.6. | 4   | Worked on Projects page, added creation and edit functions |
 | 18.6. | 2   | Added delete function to projects |
-| total | 49   | |
+| 27.6. | 1  | Refactoring code |
+| 29.6. | 3  | Refactoring and adding docstrings to code |
+| total | 53   | |
