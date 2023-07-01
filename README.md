@@ -1,9 +1,15 @@
 # WorkTimeManagementApp
-A web app to record work time for projects and keep track of customer invoicing and elapsed workload. Developers record work time done for customer projects which are managed by managers. Projects can have workload or cost limits which cause alerts based on the accumulated invoicing.
+A web app to record work time for projects and keep track of customer invoicing and elapsed workload. Developers record work time done for customer projects which are managed by managers. Projects can have workload or cost limits.
 
-Current progress can be viewed online at http://tsoha-worktime-manager.fly.dev/
+App's final state can be viewed online at http://tsoha-worktime-manager.fly.dev/
 
-When signing in, the site might crash sometimes. Reloading the page/signing in again should work. I think it has something to do with the time it takes for the db connections to wake up with fly.io after the apps have been idle for long enough.   
+There are some tasks added to the database for a *Wincewind* named user. The password is 
+```bash
+Swordfish
+```
+You can of course also create your own Manager/Developer credentials from the sign up page, as before.
+
+When signing in, the site might crash sometimes. Reloading the page/signing in again should work. I think it has something to do with the time it takes for the db connections to wake up with fly.io after the apps have been idle for long enough.
 
 ## How to setup and run locally (tested in Uni Linux environment, some steps/commands might be different on Windows or Mac):
 1.  Clone the repository or download it as a zip:
@@ -61,7 +67,9 @@ cd src
   done tasks towards a customer's projects.
   - [x] Users see only their tasks on the home page view.
   - [x] Developers can only modify their own tasks.
-- [ ] Statistical view where users can query for customer and project details from specific period of time.
+- [x] Statistical view where users can query for customer and project details from specific period of time.
+  - [x] Tasks can be filtered/searched using customers, projects and a date range.
+  - [x] Managers can see everyone's tasks, but those without the access level can only see their own tasks.
 - [x] The type of the work has a specific cost allocated to it. 
   - [ ] senior developer modifier to this cost.
   - [ ] This cost will affect the invoicing for that project's customer.
