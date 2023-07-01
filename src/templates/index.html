@@ -4,12 +4,12 @@
 
 {% block headers_addon %}
 <form action="/change-week" class="form-inline" method="GET">
-  <label for="chosen_date" class="col-form-label-lg">Change displayed week:</label>
-  <input type="date" id="chosen_date" name="chosen_date" onchange='this.form.submit()'
-    value="{{ session.chosen_date.strftime('%Y-%m-%d') }}">
+  <label for="chosen_week" class="col-form-label-lg">Change displayed week:</label>
+  <input type="week" id="chosen_week" name="chosen_week" onchange='this.form.submit()' value="{{ chosen_week }}">
 </form>
 {% endblock %}
 {% block h1 %}Home Page{% endblock %}
+{% block h2 %}Week {{ session.chosen_week[1] }}{% endblock %}
 
 {% block navbar_home %}
 <li class="nav-item dropdown">
@@ -144,28 +144,15 @@
       return el.value;
     }
 
-    function getCurrentWeek() {
-      currentDate = new Date(document.getElementById("chosen_date").value);
-      startDate = new Date(currentDate.getFullYear(), 0, 1);
-      var days = Math.floor((currentDate - startDate) /
-        (24 * 60 * 60 * 1000));
-      return Math.ceil(days / 7);
-    }
-    let weekNum = getCurrentWeek();
-    document.getElementById("week_num").innerHTML = "Week " + weekNum;
-
     function openForm() {
       document.getElementById("taskForm").style.display = "block";
-      // document.getElementById("open-button").style.display = "none";
     }
 
     function closeForm() {
       document.getElementById("taskForm").style.display = "none";
-      // document.getElementById("open-button").style.display = "block";
     }
 
     var projects = JSON.parse('{{ projects | tojson }}');
-    console.log(projects);
 
     function updateProjectsList() {
       projectEl = document.getElementById("project_id");

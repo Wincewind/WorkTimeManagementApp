@@ -16,7 +16,7 @@ class UserService:
         """Check if user exists in repository and the given password matches.
 
         User's user_level, user_id, username, csrf_token and
-        a chosen_date are stored in the flask session data.
+        a chosen_week are stored in the flask session data.
 
         Args:
             username (str): username to find in repository.
@@ -34,7 +34,7 @@ class UserService:
         session["user_id"] = user.id
         session["username"] = user.username
         session["csrf_token"] = token_hex(16)
-        session["chosen_date"] = datetime.now()
+        session["chosen_week"] = (datetime.now().year, datetime.now().isocalendar()[1])
         return True
 
     def logout(self):
@@ -43,7 +43,7 @@ class UserService:
         del session["user_id"]
         del session["username"]
         del session["user_level"]
-        del session["chosen_date"]
+        del session["chosen_week"]
 
     def _get_user_roles(self):
         """Get available roles from the user repository."""
@@ -91,11 +91,18 @@ class UserService:
             self._roles = self._get_user_roles()
         return self._roles
 
-    def check_user_role_level(self, level: int):
+    def check_user_role_level(self, level: int, should_abort=True):
         """Check if session's user_level exceeds the given
         level at which point 403 HTTPException is raised."""
         if level < session.get("user_level", float("inf")):
-            abort(403)
+            if should_abort:
+                abort(403)
+            else:
+                check_result = False
+        else:
+            check_result = True
+
+        return check_result
 
     def check_csrf(self, token):
         """Compare the given token to session's csrf_token

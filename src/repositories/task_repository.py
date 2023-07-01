@@ -100,5 +100,38 @@ class TaskRepository:
         self._db.session.execute(sql, task_values)
         self._db.session.commit()
 
+    def select_task_details(self, filter_values: dict):
+        """Select tasks based on filtering. If no filters
+        were provided, all possible tasks are selected. The query
+        is built dynamically based on what filter vailues were provided."""
+        select_part = """SELECT tasks.id as task_id, task_date, duration_hours,
+            duration_minutes, note, customers.name as customer_name, 
+            projects.name as project_name, username, task_types.description as type_desc
+            FROM tasks LEFT JOIN customers ON customer_id=customers.id 
+            LEFT JOIN projects ON project_id=projects.id LEFT JOIN users ON user_id=users.id
+            LEFT JOIN task_types ON task_type_id=task_types.id"""
+        groupby_part = (
+            "GROUP BY tasks.id, customers.id, projects.id, users.id, task_types.id"
+        )
+        where_part = " "
+        if len(filter_values) > 0:
+            where_parts = []
+            for filter_key in filter_values:
+                if filter_key == "customer_id":
+                    part = "customers.id =:"
+                if filter_key == "project_id":
+                    part = "projects.id =:"
+                if filter_key == "from_date":
+                    part = "task_date >=:"
+                if filter_key == "to_date":
+                    part = "task_date <=:"
+                if filter_key == "user_id":
+                    part = "users.id =:"
+                where_parts.append(part + filter_key)
+            where_part = f' WHERE {" AND ".join(where_parts)} '
+        sql = text(select_part + where_part + groupby_part)
+        tasks = self._db.session.execute(sql, filter_values).fetchall()
+        return tasks
+
 
 task_repository = TaskRepository(db)

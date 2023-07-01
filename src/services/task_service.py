@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import session
 from repositories.task_repository import task_repository
+from services.user_service import user_service
 
 
 class TaskService:
@@ -32,9 +33,18 @@ class TaskService:
             task["task_id"] = session["chosen_task"]["id"]
         return task
 
-    def get_weeks_tasks(self, user_id: int, chosen_date=datetime.now()):
-        week_num = chosen_date.isocalendar()[1]
-        return self.repository.get_weeks_tasks(user_id, week_num, chosen_date.year)
+    def _prepare_query_input(self, form_data):
+        filter_values = {}
+        for val in form_data:
+            if val in ["from_date", "to_date", "customer_id", "project_id"]:
+                if form_data[val] != "":
+                    filter_values[val] = form_data[val]
+        return filter_values
+
+    def get_weeks_tasks(self, user_id: int):
+        return self.repository.get_weeks_tasks(
+            user_id, session["chosen_week"][1], session["chosen_week"][0]
+        )
 
     def get_all_task_types(self):
         return self.repository.get_types()
@@ -57,6 +67,22 @@ class TaskService:
     def edit_task(self, form_data):
         task = self._prepare_task_input(form_data)
         self.repository.edit(task)
+
+    def query_task_details(self, query_data=None):
+        """Parse form arguments into a query and fetch data from
+        task repository. If the user doesn't have a manager role,
+        only their tasks will be returned.
+        """
+        if query_data is None:
+            now = datetime.now()
+            from_date = datetime(now.year, 1, 1)
+            to_date = datetime(now.year, 12, 31)
+            filters = {"from_date": from_date, "to_date": to_date}
+        else:
+            filters = self._prepare_query_input(query_data)
+        if not user_service.check_user_role_level(1, False):
+            filters["user_id"] = session["user_id"]
+        return task_repository.select_task_details(filters)
 
 
 task_service = TaskService()

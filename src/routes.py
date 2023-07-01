@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 from flask import redirect, render_template, request, session, flash
 from app import app
 from services.user_service import user_service
@@ -41,13 +42,13 @@ def index():
     if request.method == "GET":
         customers_, projects_ = _get_customers_and_projects()
         task_types = task_service.get_all_task_types()
-        tasks = task_service.get_weeks_tasks(session["user_id"], session["chosen_date"])
+        tasks = task_service.get_weeks_tasks(session["user_id"])
         task_form_display = (
             "none" if session.get("chosen_task", None) is None else "block"
         )
         return render_template(
             "index.html",
-            chosen_date=session["chosen_date"].strftime("%Y-%m-%d"),
+            chosen_week=f'{session["chosen_week"][0]}-W{session["chosen_week"][1]}',
             tasks=tasks,
             projects=projects_,
             customers=customers_,
@@ -126,9 +127,16 @@ def change_week():
     """Change session's chosen_week to user selection.
     Done on home page with the weekly task view."""
     try:
-        session["chosen_date"] = datetime.fromisoformat(request.args["chosen_date"])
+        year_and_week = re.match("(\d*)-W(\d{1,2})", request.args["chosen_week"])
+        session["chosen_week"] = (
+            int(year_and_week.group(1)),
+            int(year_and_week.group(2)),
+        )
     except ValueError:
-        session["chosen_date"] = datetime.today()
+        session["chosen_week"] = (
+            datetime.today().year,
+            datetime.today().isocalendar()[1],
+        )
     return redirect("/")
 
 
@@ -249,3 +257,16 @@ def deselect_project():
     if session.get("chosen_project", None) is not None:
         del session["chosen_project"]
     return redirect("/projects")
+
+
+@app.route("/queries")
+def queries():
+    """Render page for displaying saved tasks in table format and filtering/searching for them from specific customers, projects or date period."""
+    customers_, projects_ = _get_customers_and_projects()
+    if "select_button" not in request.args:
+        tasks = task_service.query_task_details()
+    else:
+        tasks = task_service.query_task_details(request.args)
+    return render_template(
+        "query_page.html", tasks=tasks, customers=customers_, projects=projects_
+    )

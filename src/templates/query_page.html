@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}Query for tasks{% endblock %}
+{% block h1 %}Query for tasks{% endblock %}
+{% block h2 %}Query and export tasks{% endblock %}
+{% block content %}
+
+<table class="table table-dark table-striped table-hover" id="query_table">
+  <thead>
+    <form action="/queries" class="form-container" method="GET">
+      <tr>
+        <th scope="col">
+          <select class="form-select" name="customer_id" id="customer_id" onchange="updateProjectsList()">
+            {% for customer in customers %}
+            <option value={{ customer[0] }}>{{ customer[1] }}</option>
+            {% endfor %}
+          </select>
+        </th>
+        <th scope="col">
+          <select class="form-select" name="project_id" id="project_id"></select>
+        </th>
+        <th scope="col"></th>
+        <th scope="col">
+          <input type="date" class="form-date" name="from_date" id="from_date"></input>
+          <input type="date" class="form-date" name="to_date" id="to_date"></input>
+        </th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col">
+          <button class="btn btn-secondary btn-lg m-1" type="submit" class="btn" name="clear_button">Clear</button>
+          <button class="btn btn-primary btn-lg m-1" type="submit" class="btn" name="select_button">Select</button>
+        </th>
+      </tr>
+    </form>
+    <tr>
+      <th scope="col">Customer name</th>
+      <th scope="col">Project</th>
+      <th scope="col">Submitted by</th>
+      <th scope="col" id="h_task_date">Task date</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Task type</th>
+      <th scope="col" id="h_task_note">Task note</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <td>{{ task.customer_name }}</td>
+      <td>{{ task.project_name }}</td>
+      <td>{{ task.username }}</td>
+      <td>{{ task.task_date }}</td>
+      <td>{{ '%02d' % task.duration_hours}}:{{ '%02d' % task.duration_minutes}}</td>
+      <td>{{ task.type_desc }}</td>
+      <td>{{ task.note }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+{% block script%}
+<script>
+  function getSelectedCustomerId() {
+    var el = document.getElementById('customer_id');
+    return el.value;
+  }
+
+  var projects = JSON.parse('{{ projects | tojson }}');
+
+  function updateProjectsList() {
+    projectEl = document.getElementById("project_id");
+    projectEl.innerHTML = "";
+    var option = document.createElement("option");
+    option.value = "";
+    option.text = "";
+    projectEl.appendChild(option);
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i].customer_id == getSelectedCustomerId() && projects[i].project_id != null) {
+        var option = document.createElement("option");
+        option.value = projects[i].project_id;
+        option.text = projects[i].project_name;
+        projectEl.appendChild(option);
+      }
+    }
+  }
+
+  updateProjectsList();
+</script>
+{% endblock %}

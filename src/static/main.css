@@ -1,6 +1,6 @@
 body {
-    background: #07384f;
-    color: white;
+  background: #07384f;
+  color: white;
 }
 
 h1,
@@ -8,38 +8,58 @@ h2,
 .navbar span,
 .navbar a,
 .navbar .sr-only {
-    color: rgb(255, 105, 5);
+  color: rgb(255, 105, 5);
 }
 
 .navbar span {
-    font-size: 150%;
+  font-size: 150%;
 }
 
 .row .card {
-    background-color: rgb(255, 105, 5);
+  background-color: rgb(255, 105, 5);
 }
 
 .nav-link.disabled {
-    color: rgb(255, 105, 5, 0.5);
+  color: rgb(255, 105, 5, 0.5);
 }
 
 .project-form,
 .customer-form {
-    margin: auto;
-    border: 20em;
-    max-width: 60em;
+  margin: auto;
+  border: 20em;
+  max-width: 60em;
 }
 
 .task-form {
-    margin: auto;
-    position: absolute;
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-    max-width: 50em;
+  margin: auto;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  max-width: 50em;
 }
 
 .project-form .row :is(label, select, input) {
-    display: inline-block;
-    max-width: 15em;
+  display: inline-block;
+  max-width: 15em;
+}
+
+table#query_table {
+  width: 100%;
+}
+
+table#query_table th {
+  width: 10%;
+}
+
+table#query_table th#h_task_date {
+  width: 15%;
+}
+
+table#query_table th#h_task_note {
+  width: 30%;
+}
+
+table#query_table th :is(#to_date, button) {
+  float: right;
 }
