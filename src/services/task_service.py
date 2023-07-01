@@ -58,7 +58,6 @@ class TaskService:
         if task is None:
             return False
         session["chosen_task"] = task._asdict()
-        print(session["chosen_task"])
         return True
 
     def delete_task(self, task_id):
