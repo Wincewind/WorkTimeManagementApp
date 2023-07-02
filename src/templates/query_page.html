@@ -2,8 +2,17 @@
 {% block title %}Query for tasks{% endblock %}
 {% block h1 %}Query for tasks{% endblock %}
 {% block h2 %}Query and export tasks{% endblock %}
+{% block navbar_query %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Query and export invoicing
+  </a>
+  <ul class="dropdown-menu bg-dark">
+    <li><a class="dropdown-item" href="/export">Export tasks to csv</a></li>
+  </ul>
+</li>
+{% endblock %}
 {% block content %}
-
 <table class="table table-dark table-striped table-hover" id="query_table">
   <thead>
     <form action="/queries" class="form-container" method="GET">
@@ -32,7 +41,7 @@
       </tr>
     </form>
     <tr>
-      <th scope="col">Customer name</th>
+      <th scope="col">Customer</th>
       <th scope="col">Project</th>
       <th scope="col">Submitted by</th>
       <th scope="col" id="h_task_date">Task date</th>

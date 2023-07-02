@@ -106,7 +106,7 @@ class TaskRepository:
         is built dynamically based on what filter vailues were provided."""
         select_part = """SELECT tasks.id as task_id, task_date, duration_hours,
             duration_minutes, note, customers.name as customer_name, 
-            projects.name as project_name, username, task_types.description as type_desc
+            projects.name as project_name, username, task_types.description as type_desc, invoiceable
             FROM tasks LEFT JOIN customers ON customer_id=customers.id 
             LEFT JOIN projects ON project_id=projects.id LEFT JOIN users ON user_id=users.id
             LEFT JOIN task_types ON task_type_id=task_types.id"""

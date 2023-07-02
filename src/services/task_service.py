@@ -81,7 +81,9 @@ class TaskService:
             filters = self._prepare_query_input(query_data)
         if not user_service.check_user_role_level(1, False):
             filters["user_id"] = session["user_id"]
-        return task_repository.select_task_details(filters)
+        tasks = task_repository.select_task_details(filters)
+        session["selected_tasks"] = [task._asdict() for task in tasks]
+        return tasks
 
 
 task_service = TaskService()

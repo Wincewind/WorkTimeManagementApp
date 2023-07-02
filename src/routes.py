@@ -1,6 +1,8 @@
 from datetime import datetime
 import re
-from flask import redirect, render_template, request, session, flash
+import csv
+from io import StringIO
+from flask import redirect, render_template, request, session, flash, make_response
 from app import app
 from services.user_service import user_service
 from services.task_service import task_service
@@ -270,3 +272,48 @@ def queries():
     return render_template(
         "query_page.html", tasks=tasks, customers=customers_, projects=projects_
     )
+
+
+@app.route("/export")
+def export():
+    """Export the selected tasks on task query page to a csv file.
+
+    Returns:
+        A response that redirects back to queries and a tasks.csv attachment.
+    """
+    si = StringIO()
+    cw = csv.writer(si, delimiter=";")
+    cw.writerow(
+        [
+            "Customer",
+            "Project",
+            "Submitted by",
+            "Task date",
+            "Duration hours",
+            "Duration minutes",
+            "Task type",
+            "Task note",
+            "Invoiceable",
+        ]
+    )
+    cw.writerows(
+        [
+            (
+                task["customer_name"],
+                task["project_name"],
+                task["username"],
+                task["task_date"],
+                task["duration_hours"],
+                task["duration_minutes"],
+                task["type_desc"],
+                task["note"],
+                task["invoiceable"],
+            )
+            for task in session["selected_tasks"]
+        ]
+    )
+    response = make_response(si.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=tasks.csv"
+    response.headers["Content-type"] = "text/csv"
+    response.location = "/queries"
+    return response

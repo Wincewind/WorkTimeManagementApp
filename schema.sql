@@ -93,4 +93,5 @@ VALUES  (1, 2, 0, '20230519', 4, 5, 1, 'Started creating basic login functions a
         (1, 1, 0, '20230627', 4, 5, 1, 'Refactoring code'),
         (1, 3, 0, '20230629', 4, 5, 3, 'Refactoring and adding docstrings to code'),
         (1, 4, 30, '20230701', 4, 5, 1, 'Added a query page to view tasks in table format which can be filtered'),
-        (1, 2, 0, '20230701', 4, 5, 3, 'Updating documentation and adding mock data to application');
+        (1, 2, 0, '20230701', 4, 5, 3, 'Updating documentation and adding mock data to application'),
+        (1, 1, 30, '20230702', 4, 5, 1, 'Added exporting to csv file to the tasks query page');
