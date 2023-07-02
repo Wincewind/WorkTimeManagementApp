@@ -70,6 +70,7 @@ cd src
 - [x] Statistical view where users can query for customer and project details from specific period of time.
   - [x] Tasks can be filtered/searched using customers, projects and a date range.
   - [x] Managers can see everyone's tasks, but those without the access level can only see their own tasks.
+  - [x] The selected tasks can be exported to a local csv file.
 - [x] The type of the work has a specific cost allocated to it. 
   - [ ] senior developer modifier to this cost.
   - [ ] This cost will affect the invoicing for that project's customer.
